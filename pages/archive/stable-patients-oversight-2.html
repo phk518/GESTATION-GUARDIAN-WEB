@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>Stable Patients Oversight | Clinical Dashboard</title>
+    
+    <link href="https://fonts.googleapis.com" rel="preconnect">
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Manrope:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#00497d", "primary-fixed": "#d1e4ff", "primary-container": "#0061a4",
+                        "tertiary": "#084e57", "tertiary-fixed": "#b2ecf7", "secondary": "#535f70",
+                        "secondary-fixed": "#d7e3f8", "error": "#ba1a1a", "error-container": "#ffdad6",
+                        "surface": "#f7f9fe", "surface-container-highest": "#dfe3e8",
+                        "surface-container-lowest": "#ffffff", "surface-container-low": "#f1f4f9",
+                        "on-surface": "#181c20", "outline": "#717782", "outline-variant": "#c1c7d2",
+                        "on-surface-variant": "#414750", "on-tertiary-fixed-variant": "#084e57"
+                    },
+                    fontFamily: { headline: ["Manrope"], body: ["Inter"], label: ["Inter"] }
+                }
+            }
+        }
+    </script>
+    <style>
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        body { font-family: 'Inter', sans-serif; }
+        h1, h2, h3, .font-headline { font-family: 'Manrope', sans-serif; }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+        .btn-gradient { background: linear-gradient(135deg, #00497d 0%, #0061a4 100%); }
+            /* --- Glassmorphism Theme --- */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.45) !important;
+            backdrop-filter: blur(16px) saturate(180%);
+            -webkit-backdrop-filter: blur(16px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.5) !important;
+            box-shadow: 0 8px 32px 0 rgba(0, 73, 125, 0.08);
+        }
+        .glass-nav {
+            background: rgba(247, 249, 254, 0.6) !important;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.3) !important;
+        }
+        .bg-surface { background: #f0f4f9 !important; }
+    </style>
+</head>
+<body class="bg-surface text-on-surface flex overflow-hidden selection:bg-primary-fixed selection:text-[#001d36]">
+    <div class="fixed inset-0 z-0 pointer-events-none overflow-hidden">
+        <div class="absolute -top-32 -left-32 w-[600px] h-[600px] bg-blue-300 rounded-full blur-[120px] opacity-40"></div>
+        <div class="absolute bottom-0 right-0 w-[700px] h-[700px] bg-teal-300 rounded-full blur-[150px] opacity-40"></div>
+    </div>
+
+    <aside id="sidebar-target" class="h-screen w-64 fixed left-0 top-0 bg-[#f1f4f9] shadow-[0px_12px_32px_rgba(24,28,32,0.06)] flex flex-col py-8 gap-6 z-50"></aside>
+
+    <main class="ml-64 flex-1 h-screen overflow-y-auto flex flex-col relative bg-surface">
+        
+        <header class="flex justify-between items-center w-full px-8 py-4 sticky top-0 z-40 glass-nav">
+            <div class="flex items-center gap-6 w-1/2">
+                <div class="relative w-full max-w-md group">
+                    <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-primary transition-colors">search</span>
+                    <input class="w-full pl-10 pr-4 py-2 bg-surface-container-highest/50 border-none rounded-xl text-sm focus:ring-2 focus:ring-primary focus:glass-card transition-all outline-none" placeholder="Search patients or records..." type="text"/>
+                </div>
+            </div>
+            <div class="flex items-center gap-6">
+                <div class="flex items-center gap-4 text-outline">
+                    <button class="material-symbols-outlined hover:text-primary transition-colors outline-none relative">
+                        notifications
+                        <span class="absolute top-0 right-0 w-2 h-2 bg-error rounded-full border-2 border-white"></span>
+                    </button>
+                    <button class="material-symbols-outlined hover:text-primary transition-colors outline-none">hertory</button>
+                    <button class="material-symbols-outlined hover:text-primary transition-colors outline-none">chat_bubble</button>
+                </div>
+                <div class="h-8 w-[1px] bg-outline-variant/30"></div>
+                <div class="flex items-center gap-3">
+                    <div class="text-right">
+                        <p class="text-sm font-semibold text-primary">Dr. Julian Vance</p>
+                        <p class="text-[10px] text-outline font-medium">Chief of Surgery</p>
+                    </div>
+                    <img alt="User profile" class="w-10 h-10 rounded-full object-cover border-2 border-primary-container" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBVQw02d14xSlr9ieWpMrD__bDSPGh9LeIZ_YeNJJZrI5JUzK2c7-knSOxZEOtMMADdeVQLUkAF8OgH8WclrOZeIz0tNkTto2zp9n_ga4gubS8aUs9nZ9W3-Q3xzQJ-qoRx6DhiJP_X0MWpG_HaZ8ta0uLQvR7d9UoYg6wEtQXuVDYs14FCdGZAWYKZ6FeribPDd1OLgFP77MsmwpaqqsSXGqkDg6ORK8OKzMr2ADJddPf25CoM-bIc18CoTZOZtW91MW02__T-LJbR"/>
+                </div>
+            </div>
+        </header>
+
+        <div class="p-10 max-w-[1400px] mx-auto w-full space-y-8 flex-1">
+            
+            <div class="mb-10">
+                <div class="flex items-center gap-2 text-xs text-outline font-medium uppercase tracking-widest mb-3">
+                    <span class="text-primary font-bold">Oversight</span>
+                    <span class="material-symbols-outlined text-[14px]">chevron_right</span>
+                    <span>Stable Ward</span>
+                </div>
+                <h1 class="font-headline text-5xl leading-none font-extrabold tracking-tight text-slate-900 mb-3">Stable Patients</h1>
+                <p class="font-body text-outline text-base font-medium">Monitoring patients with consistent vital trends</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                
+                <div class="glass-card p-8 rounded-[1.5rem] shadow-[0px_12px_32px_rgba(24,28,32,0.06)] hover:-translate-y-1 hover:shadow-xl border border-transparent hover:border-outline-variant/20 transition-all duration-300">
+                    <div class="flex items-start justify-between mb-8">
+                        <div class="flex gap-4">
+                            <img alt="Clara M." class="w-16 h-16 rounded-full object-cover shadow-sm" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB4Pd8xvdWiltsTdS0js0YiGezqPwHEftn_YAO_UAHST8FABG0bcu9nUJefGDWptqZV2ONt56btfOlEzqHeqAEJdcsRPIPJkH8o-U62yJoYFS1uTSsVeJT2bhxxHOyMM3YG3Yt9ZHVWToYsko8KySJKB9uBoRhMTVRJk6kmv4SBB0ClLmuVz0fRSJIa4T_t-ZtBQ2C1ZYaiLN39zPb8Vy5UTucVRLgCnujyjCHce9J1MEEJ2L0Q0DVDrDUYiXejsFfZGQg7qKq3cZdV"/>
+                            <div>
+                                <h4 class="font-headline text-lg font-bold text-on-surface">Clara M.</h4>
+                                <div class="flex flex-col mt-0.5">
+                                    <span class="text-[11px] font-bold text-outline uppercase tracking-wider">Age 74 • Ward 4A</span>
+                                    <span class="text-xs font-medium text-outline mt-0.5">Room 402-B</span>
+                                </div>
+                            </div>
+                        </div>
+                        <span class="px-3 py-1.5 bg-tertiary-fixed text-on-tertiary-fixed-variant text-[10px] font-extrabold tracking-widest rounded-md uppercase">Stable</span>
+                    </div>
+                    <div class="space-y-6">
+                        <div>
+                            <div class="flex justify-between items-end mb-2">
+                                <span class="text-xs font-bold text-on-surface-variant uppercase tracking-wider">Vital Stability</span>
+                                <span class="text-sm font-bold text-tertiary">96%</span>
+                            </div>
+                            <div class="h-1.5 bg-surface-container-highest rounded-full w-full overflow-hidden">
+                                <div class="h-full bg-tertiary w-[96%] rounded-full"></div>
+                            </div>
+                        </div>
+                        <a href="patient-detail-alice-r.html" class="block w-full text-center py-3 bg-surface-container-low text-primary font-bold text-sm tracking-wide hover:bg-primary hover:text-white transition-colors rounded-xl">View Details</a>
+                    </div>
+                </div>
+
+                <div class="glass-card p-8 rounded-[1.5rem] shadow-[0px_12px_32px_rgba(24,28,32,0.06)] hover:-translate-y-1 hover:shadow-xl border border-transparent hover:border-outline-variant/20 transition-all duration-300">
+                    <div class="flex items-start justify-between mb-8">
+                        <div class="flex gap-4">
+                            <img alt="Elena V." class="w-16 h-16 rounded-full object-cover shadow-sm" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBjwwFyLWAo5DCwYJgK60ffyoWax71CnQr4CtmtgUaADaYdIBuGQrWHpXK5-olltprrNEyRLWt6jEfKQLJbLh5VfUeAjmioGoeFXI5XVK6h0Ct3B_mVZ3O4SKhO_n2L8nNICh4w_BfQFLa5TYJxtFoNbXOZB6Yt292-93_LRU0k9oHf_w9BUBQVQ8MUjS-DsOVo4UMhmS87T0JZFhWwW79Mfe0CBXBDK6lyZTPAZ7WLZR7XTUsqhrHGxeSuOGtC6ByKIRgcw_wq1qYt"/>
+                            <div>
+                                <h4 class="font-headline text-lg font-bold text-on-surface">Elena V.</h4>
+                                <div class="flex flex-col mt-0.5">
+                                    <span class="text-[11px] font-bold text-outline uppercase tracking-wider">Age 58 • Ward 2C</span>
+                                    <span class="text-xs font-medium text-outline mt-0.5">Room 215</span>
+                                </div>
+                            </div>
+                        </div>
+                        <span class="px-3 py-1.5 bg-tertiary-fixed text-on-tertiary-fixed-variant text-[10px] font-extrabold tracking-widest rounded-md uppercase">Stable</span>
+                    </div>
+                    <div class="space-y-6">
+                        <div>
+                            <div class="flex justify-between items-end mb-2">
+                                <span class="text-xs font-bold text-on-surface-variant uppercase tracking-wider">Vital Stability</span>
+                                <span class="text-sm font-bold text-tertiary">94%</span>
+                            </div>
+                            <div class="h-1.5 bg-surface-container-highest rounded-full w-full overflow-hidden">
+                                <div class="h-full bg-tertiary w-[94%] rounded-full"></div>
+                            </div>
+                        </div>
+                        <a href="patient-detail-alice-r.html" class="block w-full text-center py-3 bg-surface-container-low text-primary font-bold text-sm tracking-wide hover:bg-primary hover:text-white transition-colors rounded-xl">View Details</a>
+                    </div>
+                </div>
+
+                <div class="glass-card p-8 rounded-[1.5rem] shadow-[0px_12px_32px_rgba(24,28,32,0.06)] hover:-translate-y-1 hover:shadow-xl border border-transparent hover:border-outline-variant/20 transition-all duration-300">
+                    <div class="flex items-start justify-between mb-8">
+                        <div class="flex gap-4">
+                            <img alt="Maya T." class="w-16 h-16 rounded-full object-cover shadow-sm" src="https://images.unsplash.com/photo-1531123897727-8f129e1bf98c?w=200&h=200&fit=crop"/>
+                            <div>
+                                <h4 class="font-headline text-lg font-bold text-on-surface">Maya T.</h4>
+                                <div class="flex flex-col mt-0.5">
+                                    <span class="text-[11px] font-bold text-outline uppercase tracking-wider">Age 42 • Ward 4A</span>
+                                    <span class="text-xs font-medium text-outline mt-0.5">Room 408-A</span>
+                                </div>
+                            </div>
+                        </div>
+                        <span class="px-3 py-1.5 bg-tertiary-fixed text-on-tertiary-fixed-variant text-[10px] font-extrabold tracking-widest rounded-md uppercase">Stable</span>
+                    </div>
+                    <div class="space-y-6">
+                        <div>
+                            <div class="flex justify-between items-end mb-2">
+                                <span class="text-xs font-bold text-on-surface-variant uppercase tracking-wider">Vital Stability</span>
+                                <span class="text-sm font-bold text-tertiary">97%</span>
+                            </div>
+                            <div class="h-1.5 bg-surface-container-highest rounded-full w-full overflow-hidden">
+                                <div class="h-full bg-tertiary w-[97%] rounded-full"></div>
+                            </div>
+                        </div>
+                        <a href="patient-detail-alice-r.html" class="block w-full text-center py-3 bg-surface-container-low text-primary font-bold text-sm tracking-wide hover:bg-primary hover:text-white transition-colors rounded-xl">View Details</a>
+                    </div>
+                </div>
+
+                <div class="glass-card p-8 rounded-[1.5rem] shadow-[0px_12px_32px_rgba(24,28,32,0.06)] hover:-translate-y-1 hover:shadow-xl border border-transparent hover:border-outline-variant/20 transition-all duration-300">
+                    <div class="flex items-start justify-between mb-8">
+                        <div class="flex gap-4">
+                            <img alt="Sarah J." class="w-16 h-16 rounded-full object-cover shadow-sm" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC-0wtKwf4Lu4uTqm36XrxATwEQgnuhKH2PTFrU38hurn82kuNl5V2QrzlAOxhmrlP3ly5ft3k7_RIo7WxPudh8k01ehbn2mM-tW0cZChnEnk5kKDWj-UGZcQBbpEY3v_3zOskP_rWOZD_VBFTiMi5PjHjubONYjIF5UKcVIVowX2r04bFtAFwcPqXsUigQDMH_vqmFQweApqYUKsNGrcuMeQPk6iHzCEFXeCtb_gKG9YskVQVIDi4zGJif5tur98VagAyd9Ep3BCT1"/>
+                            <div>
+                                <h4 class="font-headline text-lg font-bold text-on-surface">Sarah J.</h4>
+                                <div class="flex flex-col mt-0.5">
+                                    <span class="text-[11px] font-bold text-outline uppercase tracking-wider">Age 29 • Ward 1B</span>
+                                    <span class="text-xs font-medium text-outline mt-0.5">Room 112</span>
+                                </div>
+                            </div>
+                        </div>
+                        <span class="px-3 py-1.5 bg-tertiary-fixed text-on-tertiary-fixed-variant text-[10px] font-extrabold tracking-widest rounded-md uppercase">Stable</span>
+                    </div>
+                    <div class="space-y-6">
+                        <div>
+                            <div class="flex justify-between items-end mb-2">
+                                <span class="text-xs font-bold text-on-surface-variant uppercase tracking-wider">Vital Stability</span>
+                                <span class="text-sm font-bold text-tertiary">95%</span>
+                            </div>
+                            <div class="h-1.5 bg-surface-container-highest rounded-full w-full overflow-hidden">
+                                <div class="h-full bg-tertiary w-[95%] rounded-full"></div>
+                            </div>
+                        </div>
+                        <a href="patient-detail-alice-r.html" class="block w-full text-center py-3 bg-surface-container-low text-primary font-bold text-sm tracking-wide hover:bg-primary hover:text-white transition-colors rounded-xl">View Details</a>
+                    </div>
+                </div>
+
+                <div class="glass-card p-8 rounded-[1.5rem] shadow-[0px_12px_32px_rgba(24,28,32,0.06)] hover:-translate-y-1 hover:shadow-xl border border-transparent hover:border-outline-variant/20 transition-all duration-300">
+                    <div class="flex items-start justify-between mb-8">
+                        <div class="flex gap-4">
+                            <img alt="Rosa L." class="w-16 h-16 rounded-full object-cover shadow-sm" src="https://images.unsplash.com/photo-1554727242-741c14fa561c?w=200&h=200&fit=crop"/>
+                            <div>
+                                <h4 class="font-headline text-lg font-bold text-on-surface">Rosa L.</h4>
+                                <div class="flex flex-col mt-0.5">
+                                    <span class="text-[11px] font-bold text-outline uppercase tracking-wider">Age 67 • Ward 3D</span>
+                                    <span class="text-xs font-medium text-outline mt-0.5">Room 305</span>
+                                </div>
+                            </div>
+                        </div>
+                        <span class="px-3 py-1.5 bg-tertiary-fixed text-on-tertiary-fixed-variant text-[10px] font-extrabold tracking-widest rounded-md uppercase">Stable</span>
+                    </div>
+                    <div class="space-y-6">
+                        <div>
+                            <div class="flex justify-between items-end mb-2">
+                                <span class="text-xs font-bold text-on-surface-variant uppercase tracking-wider">Vital Stability</span>
+                                <span class="text-sm font-bold text-tertiary">98%</span>
+                            </div>
+                            <div class="h-1.5 bg-surface-container-highest rounded-full w-full overflow-hidden">
+                                <div class="h-full bg-tertiary w-[98%] rounded-full"></div>
+                            </div>
+                        </div>
+                        <a href="patient-detail-alice-r.html" class="block w-full text-center py-3 bg-surface-container-low text-primary font-bold text-sm tracking-wide hover:bg-primary hover:text-white transition-colors rounded-xl">View Details</a>
+                    </div>
+                </div>
+
+                <div class="glass-card p-8 rounded-[1.5rem] shadow-[0px_12px_32px_rgba(24,28,32,0.06)] hover:-translate-y-1 hover:shadow-xl border border-transparent hover:border-outline-variant/20 transition-all duration-300">
+                    <div class="flex items-start justify-between mb-8">
+                        <div class="flex gap-4">
+                            <img alt="Anita K." class="w-16 h-16 rounded-full object-cover shadow-sm" src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=200&h=200&fit=crop"/>
+                            <div>
+                                <h4 class="font-headline text-lg font-bold text-on-surface">Anita K.</h4>
+                                <div class="flex flex-col mt-0.5">
+                                    <span class="text-[11px] font-bold text-outline uppercase tracking-wider">Age 53 • Ward 2C</span>
+                                    <span class="text-xs font-medium text-outline mt-0.5">Room 221-B</span>
+                                </div>
+                            </div>
+                        </div>
+                        <span class="px-3 py-1.5 bg-tertiary-fixed text-on-tertiary-fixed-variant text-[10px] font-extrabold tracking-widest rounded-md uppercase">Stable</span>
+                    </div>
+                    <div class="space-y-6">
+                        <div>
+                            <div class="flex justify-between items-end mb-2">
+                                <span class="text-xs font-bold text-on-surface-variant uppercase tracking-wider">Vital Stability</span>
+                                <span class="text-sm font-bold text-tertiary">95%</span>
+                            </div>
+                            <div class="h-1.5 bg-surface-container-highest rounded-full w-full overflow-hidden">
+                                <div class="h-full bg-tertiary w-[95%] rounded-full"></div>
+                            </div>
+                        </div>
+                        <a href="patient-detail-alice-r.html" class="block w-full text-center py-3 bg-surface-container-low text-primary font-bold text-sm tracking-wide hover:bg-primary hover:text-white transition-colors rounded-xl">View Details</a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <a href="support-help-center.html" class="fixed bottom-10 right-10 w-14 h-14 btn-gradient text-white rounded-full flex items-center justify-center shadow-xl hover:scale-110 active:scale-95 transition-all z-50 hover:shadow-primary/40 outline-none">
+        <span class="material-symbols-outlined text-[24px]">contact_support</span>
+    </a>
+
+    <script src="../js/app.js"></script>
+</body>
+</html>
+
+
+
+

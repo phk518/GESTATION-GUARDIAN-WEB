@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>Settings | Clinical Dashboard</title>
+    
+    <link href="https://fonts.googleapis.com" rel="preconnect">
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Manrope:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#00497d", "primary-fixed": "#d1e4ff", "primary-container": "#0061a4",
+                        "tertiary": "#084e57", "tertiary-fixed": "#b2ecf7", "secondary": "#535f70",
+                        "secondary-fixed": "#d7e3f8", "error": "#ba1a1a", "error-container": "#ffdad6",
+                        "surface": "#f7f9fe", "surface-container-highest": "#dfe3e8",
+                        "surface-container-lowest": "#ffffff", "surface-container-low": "#f1f4f9",
+                        "on-surface": "#181c20", "outline": "#717782", "outline-variant": "#c1c7d2",
+                        "on-tertiary-fixed-variant": "#084e57", "tertiary-container": "#2b666f",
+                        "on-surface-variant": "#414750"
+                    },
+                    fontFamily: { headline: ["Manrope"], body: ["Inter"], label: ["Inter"] }
+                }
+            }
+        }
+    </script>
+    <style>
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        body { font-family: 'Inter', sans-serif; }
+        h1, h2, h3, .font-headline { font-family: 'Manrope', sans-serif; }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+            /* --- Glassmorphism Theme --- */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.45) !important;
+            backdrop-filter: blur(16px) saturate(180%);
+            -webkit-backdrop-filter: blur(16px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.5) !important;
+            box-shadow: 0 8px 32px 0 rgba(0, 73, 125, 0.08);
+        }
+        .glass-nav {
+            background: rgba(247, 249, 254, 0.6) !important;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.3) !important;
+        }
+        .bg-surface { background: #f0f4f9 !important; }
+    </style>
+</head>
+<body class="bg-surface text-on-surface flex overflow-hidden selection:bg-primary-fixed selection:text-[#001d36]">
+    <div class="fixed inset-0 z-0 pointer-events-none overflow-hidden">
+        <div class="absolute -top-32 -left-32 w-[600px] h-[600px] bg-blue-300 rounded-full blur-[120px] opacity-40"></div>
+        <div class="absolute bottom-0 right-0 w-[700px] h-[700px] bg-teal-300 rounded-full blur-[150px] opacity-40"></div>
+    </div>
+
+    <aside id="sidebar-target" class="h-screen w-64 fixed left-0 top-0 bg-[#f1f4f9] shadow-[0px_12px_32px_rgba(24,28,32,0.06)] flex flex-col py-8 gap-6 z-50"></aside>
+
+    <main class="flex-1 ml-64 h-screen overflow-y-auto bg-surface">
+        
+        <div class="p-12 max-w-7xl mx-auto w-full">
+            <header class="mb-12">
+                <h1 class="text-4xl font-extrabold tracking-tight text-on-surface font-headline uppercase">Settings</h1>
+                <p class="text-outline mt-2 font-medium">Configure clinic-wide protocols and personal workstation preferences.</p>
+            </header>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                
+                <div class="group glass-card p-8 rounded-xl shadow-[0px_12px_32px_rgba(24,28,32,0.06)] hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between min-h-[240px]">
+                    <div>
+                        <div class="w-12 h-12 rounded-lg bg-surface-container-low flex items-center justify-center mb-6 text-primary">
+                            <span class="material-symbols-outlined text-3xl">watch</span>
+                        </div>
+                        <h3 class="text-xl font-bold font-headline mb-3">Device Integration</h3>
+                        <p class="text-on-surface-variant text-sm leading-relaxed mb-4">Sync real-time biometrics from wearable infrastructure.</p>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="px-3 py-1 bg-surface-container rounded-full text-[10px] font-bold uppercase tracking-widest text-outline">Apple Health</span>
+                            <span class="px-3 py-1 bg-surface-container rounded-full text-[10px] font-bold uppercase tracking-widest text-outline">Garmin</span>
+                            <span class="px-3 py-1 bg-surface-container rounded-full text-[10px] font-bold uppercase tracking-widest text-outline">Fitbit</span>
+                        </div>
+                    </div>
+                    <div class="mt-6 flex justify-end">
+                        <span class="material-symbols-outlined text-outline group-hover:text-primary group-hover:translate-x-1 transition-all cursor-pointer">arrow_forward</span>
+                    </div>
+                </div>
+
+                <div class="group glass-card p-8 rounded-xl shadow-[0px_12px_32px_rgba(24,28,32,0.06)] hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between border-l-4 border-primary">
+                    <div>
+                        <div class="w-12 h-12 rounded-lg bg-primary-fixed flex items-center justify-center mb-6 text-primary">
+                            <span class="material-symbols-outlined text-3xl">traffic</span>
+                        </div>
+                        <h3 class="text-xl font-bold font-headline mb-3">Stitch AI Thresholds</h3>
+                        <p class="text-on-surface-variant text-sm leading-relaxed mb-6">Automated triage priority logic for patient vital signs.</p>
+                        <div class="space-y-3">
+                            <div class="flex items-center justify-between text-xs font-semibold">
+                                <span class="text-error">SpO2 &lt; 90%</span>
+                                <span class="text-outline uppercase tracking-tighter">Critical</span>
+                            </div>
+                            <div class="w-full bg-surface-container-high h-1.5 rounded-full overflow-hidden">
+                                <div class="bg-error w-3/4 h-full"></div>
+                            </div>
+                            <div class="flex items-center justify-between text-xs font-semibold mt-4">
+                                <span class="text-on-tertiary-fixed-variant">HR &gt; 120 bpm</span>
+                                <span class="text-outline uppercase tracking-tighter">Warning</span>
+                            </div>
+                            <div class="w-full bg-surface-container-high h-1.5 rounded-full overflow-hidden">
+                                <div class="bg-tertiary w-1/2 h-full"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="group glass-card p-8 rounded-xl shadow-[0px_12px_32px_rgba(24,28,32,0.06)] hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between">
+                    <div>
+                        <div class="w-12 h-12 rounded-lg bg-surface-container-low flex items-center justify-center mb-6 text-secondary">
+                            <span class="material-symbols-outlined text-3xl">notifications_active</span>
+                        </div>
+                        <h3 class="text-xl font-bold font-headline mb-3">Notifications</h3>
+                        <p class="text-on-surface-variant text-sm leading-relaxed">Multi-channel alerting for mobile, desktop, and medical pager systems.</p>
+                    </div>
+                    <div class="mt-8 pt-6 border-t border-outline-variant/10 flex items-center gap-4">
+                        <div class="flex -space-x-2">
+                            <div class="w-8 h-8 rounded-full bg-primary-fixed flex items-center justify-center border-2 border-surface-container-lowest z-10">
+                                <span class="material-symbols-outlined text-[14px]">smartphone</span>
+                            </div>
+                            <div class="w-8 h-8 rounded-full bg-secondary-fixed flex items-center justify-center border-2 border-surface-container-lowest z-0">
+                                <span class="material-symbols-outlined text-[14px]">desktop_windows</span>
+                            </div>
+                        </div>
+                        <span class="text-xs font-bold text-primary uppercase">8 Active Alerts</span>
+                    </div>
+                </div>
+
+                <div class="group glass-card p-8 rounded-xl shadow-[0px_12px_32px_rgba(24,28,32,0.06)] hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+                    <div class="flex items-center gap-4 mb-8">
+                        <div class="w-16 h-16 rounded-full border-2 border-primary-container p-0.5">
+                            <img alt="Profile" class="w-full h-full object-cover rounded-full" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAf-JH5o7yVyT82FeL7TLdxiUTcKUIUWn3A4PRIHsInEMiAREKmFnRHAxVZ5Kxe6T_fvHELu757qiDdRzrDurCCHOLonHHgvEH1Ni77hQz8q4ilQtQJnrWxk_pD4O3NQtT7zJJuIYNoC2nGBCyasw4QqoeKsk7E3EGZ3wHEyDdd6iC-xHAwM_EE01wozlAM95nq2X6SjSicVnvBk0xuRqJDJmwe08uesUYvs4MrvCT-OS4M4OJaSt8ZNlp_WDkJyxCkGoOZfCymneIZ">
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold font-headline">Account Profile</h3>
+                            <p class="text-xs text-outline font-medium">anya.sharma@precisionclinic.io</p>
+                        </div>
+                    </div>
+                    <div class="space-y-4">
+                        <div class="flex justify-between items-center py-3 border-b border-outline-variant/10">
+                            <span class="text-sm font-medium text-on-surface-variant">Credentials</span>
+                            <span class="text-sm font-bold text-primary bg-primary/5 px-3 py-1 rounded-md">MD, FACS</span>
+                        </div>
+                        <div class="flex justify-between items-center py-3 border-b border-outline-variant/10">
+                            <span class="text-sm font-medium text-on-surface-variant">Session Time</span>
+                            <span class="text-sm font-bold text-primary">04:22:15</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="group relative overflow-hidden glass-card p-8 rounded-xl shadow-[0px_12px_32px_rgba(24,28,32,0.06)] hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+                    <div class="absolute -right-4 -top-4 w-32 h-32 bg-tertiary-fixed opacity-20 rounded-full blur-2xl transition-all group-hover:scale-150 duration-500"></div>
+                    <div class="w-12 h-12 rounded-lg bg-tertiary-container flex items-center justify-center mb-6 text-white relative z-10">
+                        <span class="material-symbols-outlined text-3xl">shield_lock</span>
+                    </div>
+                    <h3 class="text-xl font-bold font-headline mb-3 relative z-10">Data & Security</h3>
+                    <p class="text-on-surface-variant text-sm leading-relaxed mb-6 relative z-10">Encryption protocols and HIPAA compliance certifications.</p>
+                    <div class="flex items-center gap-2 text-tertiary relative z-10">
+                        <span class="material-symbols-outlined text-sm">verified_user</span>
+                        <span class="text-[10px] font-bold uppercase tracking-widest">HIPAA Compliant</span>
+                    </div>
+                    <div class="mt-6 flex gap-2 relative z-10">
+                        <div class="flex-1 h-1.5 bg-tertiary rounded-full"></div>
+                        <div class="flex-1 h-1.5 bg-tertiary rounded-full"></div>
+                        <div class="flex-1 h-1.5 bg-tertiary rounded-full"></div>
+                        <div class="flex-1 h-1.5 bg-tertiary/20 rounded-full"></div>
+                    </div>
+                </div>
+
+                <div class="group glass-card p-8 rounded-xl shadow-[0px_12px_32px_rgba(24,28,32,0.06)] hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col">
+                    <div class="w-12 h-12 rounded-lg bg-surface-container flex items-center justify-center mb-6 text-outline group-hover:text-primary transition-colors">
+                        <span class="material-symbols-outlined text-3xl">hertory_edu</span>
+                    </div>
+                    <h3 class="text-xl font-bold font-headline mb-3">System Logs</h3>
+                    <p class="text-on-surface-variant text-sm leading-relaxed mb-8 flex-1">Detailed audit hertory of patient access and system events.</p>
+                    <button onclick="alert('Downloading system_audit_log_latest.csv...')" class="text-sm font-bold text-primary flex items-center gap-2 group-hover:gap-3 transition-all outline-none">
+                        <span>Download Audit CSV</span>
+                        <span class="material-symbols-outlined text-sm">download</span>
+                    </button>
+                </div>
+            </div>
+
+            <footer class="mt-16 pt-8 border-t border-outline-variant/15 flex flex-col md:flex-row justify-between items-center gap-8">
+                <div class="max-w-xl text-center md:text-left">
+                    <h4 class="font-headline font-bold text-lg mb-2">Clinical Precision Framework v2.4</h4>
+                    <p class="text-xs text-outline leading-relaxed">Ther workstation is secured with end-to-end medical grade encryption. Unauthorized access is strictly prohibited under federal clinical safety guidelines.</p>
+                </div>
+                <div class="flex gap-4">
+                    <button onclick="alert('Opening Privacy Policy and End User License Agreement...')" class="px-6 py-3 rounded-lg text-primary font-bold text-xs uppercase tracking-widest hover:bg-primary/5 transition-colors outline-none">
+                        Privacy Policy
+                    </button>
+                    <button onclick="alert('Initiating secure system restart sequence...')" class="px-6 py-3 rounded-lg bg-surface-container-highest text-on-surface font-bold text-xs uppercase tracking-widest hover:bg-outline-variant/40 transition-colors shadow-sm outline-none">
+                        System Restart
+                    </button>
+                </div>
+            </footer>
+        </div>
+    </main>
+
+    <script src="../js/app.js"></script>
+</body>
+</html>
+
+
+
+

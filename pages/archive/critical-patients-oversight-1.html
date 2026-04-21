@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>Critical Care Oversight | Clinical Dashboard</title>
+    
+    <link href="https://fonts.googleapis.com" rel="preconnect">
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Manrope:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#00497d", "primary-fixed": "#d1e4ff", "primary-container": "#0061a4",
+                        "tertiary": "#084e57", "tertiary-fixed": "#b2ecf7", "secondary": "#535f70",
+                        "secondary-fixed": "#d7e3f8", "error": "#ba1a1a", "error-container": "#ffdad6",
+                        "surface": "#f7f9fe", "surface-container-highest": "#dfe3e8",
+                        "surface-container-lowest": "#ffffff", "surface-container-low": "#f1f4f9",
+                        "on-surface": "#181c20", "outline": "#717782", "outline-variant": "#c1c7d2",
+                        "on-tertiary-fixed-variant": "#084e57", "tertiary-container": "#2b666f",
+                        "on-error-container": "#93000a"
+                    },
+                    fontFamily: { headline: ["Manrope"], body: ["Inter"], label: ["Inter"] }
+                }
+            }
+        }
+    </script>
+    <style>
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        body { font-family: 'Inter', sans-serif; }
+        h1, h2, h3, .font-manrope { font-family: 'Manrope', sans-serif; }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+        
+        .glass-panel { background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(24px); }
+        .primary-gradient { background: linear-gradient(135deg, #00497d 0%, #0061a4 100%); }
+            /* --- Glassmorphism Theme --- */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.45) !important;
+            backdrop-filter: blur(16px) saturate(180%);
+            -webkit-backdrop-filter: blur(16px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.5) !important;
+            box-shadow: 0 8px 32px 0 rgba(0, 73, 125, 0.08);
+        }
+        .glass-nav {
+            background: rgba(247, 249, 254, 0.6) !important;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.3) !important;
+        }
+        .bg-surface { background: #f0f4f9 !important; }
+    </style>
+</head>
+<body class="bg-surface text-on-surface flex overflow-hidden selection:bg-primary-container/30">
+    <div class="fixed inset-0 z-0 pointer-events-none overflow-hidden">
+        <div class="absolute -top-32 -left-32 w-[600px] h-[600px] bg-blue-300 rounded-full blur-[120px] opacity-40"></div>
+        <div class="absolute bottom-0 right-0 w-[700px] h-[700px] bg-teal-300 rounded-full blur-[150px] opacity-40"></div>
+    </div>
+
+    <aside id="sidebar-target" class="h-screen w-64 fixed left-0 top-0 bg-[#f1f4f9] shadow-[0px_12px_32px_rgba(24,28,32,0.06)] flex flex-col py-8 gap-6 z-50"></aside>
+
+    <main class="ml-64 flex-1 h-screen overflow-y-auto flex flex-col relative">
+        
+        <header class="flex justify-between items-center w-full px-8 py-4 sticky top-0 z-40 glass-nav">
+            <div class="flex items-center gap-8 flex-1">
+                <div class="relative w-96 group">
+                    <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-primary transition-colors">search</span>
+                    <input class="w-full bg-surface-container-high/50 border-none rounded-full py-2 pl-10 pr-4 text-sm focus:ring-1 focus:ring-primary/20 transition-all placeholder:text-slate-500" placeholder="Search by patient name, ID, or ward..." type="text"/>
+                </div>
+            </div>
+            <div class="flex items-center gap-6">
+                <div class="flex items-center gap-2 text-outline">
+                    <a href="coming-soon.html" class="p-2 hover:text-primary transition-colors relative block">
+                        <span class="material-symbols-outlined">notifications</span>
+                        <span class="absolute top-2 right-2 w-2 h-2 bg-error rounded-full border-2 border-white"></span>
+                    </a>
+                    <a href="coming-soon.html" class="p-2 hover:text-primary transition-colors block"><span class="material-symbols-outlined">history</span></a>
+                    <a href="coming-soon.html" class="p-2 hover:text-primary transition-colors block"><span class="material-symbols-outlined">chat</span></a>
+                </div>
+                <div class="h-8 w-[1px] bg-outline-variant opacity-20"></div>
+                <div class="flex items-center gap-3">
+                    <div class="text-right">
+                        <p class="text-sm font-semibold text-slate-900">Dr. Julianne Vane</p>
+                        <p class="text-[10px] text-slate-500 font-medium">Head of Obstetrics</p>
+                    </div>
+                    <img alt="Dr. Profile" class="w-10 h-10 rounded-full object-cover border-2 border-primary/10" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDn5bQMgUELKmVgp5B8-jjygLAAiEl843lTkNxrmUnW6xf-65taDmaP8QrqnjcRHR8C6k5mTmCcp3ykCEseZSw1T8pyXcTBt2GUZ6Q82VcoBLumA61q7JXx1Up_m081kgnqEqe8z8uy1Pip5kQpynmdrWFE29pUTRTITNVMQp61S2gwnP3PP5HEhAW-XgFSgeZrRyx6EYiXwFc6Cr-1hjQD5hr67boRLUgEMMD-UUPa7JNWVPwzmqZU4JOpnUVDZbro3GL2D8hRrL3Z"/>
+                </div>
+            </div>
+        </header>
+
+        <div class="p-10 max-w-[1400px] mx-auto w-full space-y-10">
+            
+            <header class="flex justify-between items-end">
+                <div class="space-y-1">
+                    <div class="flex items-center gap-3 mb-1">
+                        <span class="flex h-2 w-2 rounded-full bg-error animate-pulse"></span>
+                        <span class="text-[11px] font-bold tracking-[0.1em] text-error uppercase">Live Monitoring Active</span>
+                    </div>
+                    <h2 class="text-5xl font-extrabold text-slate-900 font-manrope tracking-tight">Critical Care Oversight</h2>
+                    <div class="flex items-center gap-4 mt-3">
+                        <p class="text-sm text-slate-500 flex items-center gap-1.5 font-medium">
+                            <span class="material-symbols-outlined text-base">schedule</span> Last updated: 2m ago
+                        </p>
+                        <span class="text-slate-300">|</span>
+                        <p class="text-sm text-slate-500 flex items-center gap-1.5 font-medium">
+                            <span class="material-symbols-outlined text-base">pregnant_woman</span> 4 Expectant Mothers at risk
+                        </p>
+                    </div>
+                </div>
+                <div class="flex gap-3">
+                    <a href="coming-soon.html" class="flex items-center gap-2 px-5 py-2.5 rounded-xl border-2 border-outline-variant/15 text-slate-600 text-sm font-bold hover:glass-card hover:border-outline-variant/30 transition-all outline-none">
+                        <span class="material-symbols-outlined text-[20px]">filter_list</span> Filter
+                    </a>
+                    <a href="coming-soon.html" class="flex items-center gap-2 px-5 py-2.5 rounded-xl border-2 border-outline-variant/15 text-slate-600 text-sm font-bold hover:glass-card hover:border-outline-variant/30 transition-all outline-none">
+                        <span class="material-symbols-outlined text-[20px]">download</span> Export Report
+                    </a>
+                </div>
+            </header>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                
+                <a href="patient-detail-alice-r.html" class="glass-card rounded-[2rem] shadow-[0px_12px_32px_rgba(24,28,32,0.06)] p-8 group hover:shadow-xl hover:-translate-y-1 transition-all duration-300 border border-transparent hover:border-error/20 outline-none block">
+                    <div class="flex justify-between items-start mb-6">
+                        <div class="flex gap-4">
+                            <img alt="Fatima L." class="w-14 h-14 rounded-2xl object-cover ring-4 ring-error/5 group-hover:ring-error/10 transition-all" src="https://images.unsplash.com/photo-1554727242-741c14fa561c?w=200&h=200&fit=crop"/>
+                            <div>
+                                <h3 class="text-xl font-bold text-slate-900 font-manrope group-hover:text-primary transition-colors">Fatima L.</h3>
+                                <p class="text-xs text-slate-500 font-medium mt-1">32 Weeks  •  ID: #VTL-0922</p>
+                            </div>
+                        </div>
+                        <span class="px-3 py-1.5 bg-error-container text-on-error-container text-[10px] font-extrabold tracking-widest rounded-md uppercase">CRITICAL</span>
+                    </div>
+                    <div class="space-y-5 mb-8">
+                        <div class="flex items-center justify-between text-xs pb-3 border-b border-outline-variant/10">
+                            <span class="text-slate-500 font-bold uppercase tracking-wider">Location</span>
+                            <span class="text-slate-900 font-bold">L&D-4 / Bed 12</span>
+                        </div>
+                        <div class="space-y-2">
+                            <div class="flex justify-between items-end mb-1">
+                                <span class="text-xs font-bold text-slate-700 uppercase tracking-widest">Composite Stability</span>
+                                <span class="text-sm font-extrabold text-error">18%</span>
+                            </div>
+                            <div class="w-full h-1.5 bg-error-container rounded-full overflow-hidden">
+                                <div class="h-full bg-error rounded-full transition-all duration-1000" style="width: 18%"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-2 gap-4 mb-8">
+                        <div class="bg-surface-container-low p-4 rounded-xl border border-transparent group-hover:border-outline-variant/10 transition-colors">
+                            <p class="text-[9px] font-bold text-slate-400 uppercase tracking-widest mb-1">Blood Pressure</p>
+                            <p class="text-xl font-black font-headline text-error">162/98</p>
+                        </div>
+                        <div class="bg-surface-container-low p-4 rounded-xl border border-transparent group-hover:border-outline-variant/10 transition-colors">
+                            <p class="text-[9px] font-bold text-slate-400 uppercase tracking-widest mb-1">Fetal HR</p>
+                            <p class="text-xl font-black font-headline text-error">102 <span class="text-[10px] font-bold text-slate-500 uppercase">BPM</span></p>
+                        </div>
+                    </div>
+                    <div class="pt-4 border-t border-outline-variant/10 flex justify-between items-center text-xs font-bold text-primary group-hover:text-primary-container transition-colors">
+                        <span>View Full Profile</span>
+                        <span class="material-symbols-outlined text-[16px] group-hover:translate-x-1 transition-transform">arrow_forward</span>
+                    </div>
+                </a>
+
+                <a href="patient-detail-alice-r.html" class="glass-card rounded-[2rem] shadow-[0px_12px_32px_rgba(24,28,32,0.06)] p-8 group hover:shadow-xl hover:-translate-y-1 transition-all duration-300 border border-transparent hover:border-error/20 outline-none block">
+                    <div class="flex justify-between items-start mb-6">
+                        <div class="flex gap-4">
+                            <img alt="Alice R." class="w-14 h-14 rounded-2xl object-cover ring-4 ring-error/5 group-hover:ring-error/10 transition-all" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA2Gs8-vv0UoyK-eTIiiyJSSDYHUjSgg90vz_dRC_0AOjIwZ8G3w5-g46iOnu2eTdSrFvQQOkKeCE-C-K6EhB_aQnhdzr9KRZnjK23vyMSKMXTggKS8xfM0SYkHVR_EAGXi8DlQzhfzdI-WPgAQvsek8mKLBAwqiPh2dMa8a-A0dh0PTH_v0iMpUdtP-ewImhgDpKG5uuwAUfglJTdrOwpcr2CD-UbQdWjMQuWqYkFdBINSpD5uo0nW6Rq0gOE9mylR2LSifH17FGo3"/>
+                            <div>
+                                <h3 class="text-xl font-bold text-slate-900 font-manrope group-hover:text-primary transition-colors">Alice R.</h3>
+                                <p class="text-xs text-slate-500 font-medium mt-1">28 Weeks  •  ID: #VTL-1104</p>
+                            </div>
+                        </div>
+                        <span class="px-3 py-1.5 bg-error-container text-on-error-container text-[10px] font-extrabold tracking-widest rounded-md uppercase">CRITICAL</span>
+                    </div>
+                    <div class="space-y-5 mb-8">
+                        <div class="flex items-center justify-between text-xs pb-3 border-b border-outline-variant/10">
+                            <span class="text-slate-500 font-bold uppercase tracking-wider">Location</span>
+                            <span class="text-slate-900 font-bold">Remote (Home)</span>
+                        </div>
+                        <div class="space-y-2">
+                            <div class="flex justify-between items-end mb-1">
+                                <span class="text-xs font-bold text-slate-700 uppercase tracking-widest">Composite Stability</span>
+                                <span class="text-sm font-extrabold text-error">32%</span>
+                            </div>
+                            <div class="w-full h-1.5 bg-error-container rounded-full overflow-hidden">
+                                <div class="h-full bg-error rounded-full transition-all duration-1000" style="width: 32%"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-2 gap-4 mb-8">
+                        <div class="bg-surface-container-low p-4 rounded-xl border border-transparent group-hover:border-outline-variant/10 transition-colors">
+                            <p class="text-[9px] font-bold text-slate-400 uppercase tracking-widest mb-1">Blood Pressure</p>
+                            <p class="text-xl font-black font-headline text-error">150/92</p>
+                        </div>
+                        <div class="bg-surface-container-low p-4 rounded-xl border border-transparent group-hover:border-outline-variant/10 transition-colors">
+                            <p class="text-[9px] font-bold text-slate-400 uppercase tracking-widest mb-1">Weight Gain</p>
+                            <p class="text-xl font-black font-headline text-error">+4 <span class="text-[10px] font-bold text-slate-500 uppercase">lbs/48h</span></p>
+                        </div>
+                    </div>
+                    <div class="pt-4 border-t border-outline-variant/10 flex justify-between items-center text-xs font-bold text-primary group-hover:text-primary-container transition-colors">
+                        <span>View Full Profile</span>
+                        <span class="material-symbols-outlined text-[16px] group-hover:translate-x-1 transition-transform">arrow_forward</span>
+                    </div>
+                </a>
+
+                <a href="patient-detail-alice-r.html" class="glass-card rounded-[2rem] shadow-[0px_12px_32px_rgba(24,28,32,0.06)] p-8 group hover:shadow-xl hover:-translate-y-1 transition-all duration-300 border border-transparent hover:border-error/20 outline-none block">
+                    <div class="flex justify-between items-start mb-6">
+                        <div class="flex gap-4">
+                            <img alt="Maya T." class="w-14 h-14 rounded-2xl object-cover ring-4 ring-error/5 group-hover:ring-error/10 transition-all" src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=200&h=200&fit=crop"/>
+                            <div>
+                                <h3 class="text-xl font-bold text-slate-900 font-manrope group-hover:text-primary transition-colors">Maya T.</h3>
+                                <p class="text-xs text-slate-500 font-medium mt-1">39 Weeks  •  ID: #VTL-0841</p>
+                            </div>
+                        </div>
+                        <span class="px-3 py-1.5 bg-error-container text-on-error-container text-[10px] font-extrabold tracking-widest rounded-md uppercase">CRITICAL</span>
+                    </div>
+                    <div class="space-y-5 mb-8">
+                        <div class="flex items-center justify-between text-xs pb-3 border-b border-outline-variant/10">
+                            <span class="text-slate-500 font-bold uppercase tracking-wider">Location</span>
+                            <span class="text-slate-900 font-bold">L&D Triage</span>
+                        </div>
+                        <div class="space-y-2">
+                            <div class="flex justify-between items-end mb-1">
+                                <span class="text-xs font-bold text-slate-700 uppercase tracking-widest">Composite Stability</span>
+                                <span class="text-sm font-extrabold text-error">21%</span>
+                            </div>
+                            <div class="w-full h-1.5 bg-error-container rounded-full overflow-hidden">
+                                <div class="h-full bg-error rounded-full transition-all duration-1000" style="width: 21%"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-2 gap-4 mb-8">
+                        <div class="bg-surface-container-low p-4 rounded-xl border border-transparent group-hover:border-outline-variant/10 transition-colors">
+                            <p class="text-[9px] font-bold text-slate-400 uppercase tracking-widest mb-1">Contractions</p>
+                            <p class="text-xl font-black font-headline text-error">4 <span class="text-[10px] font-bold text-slate-500 uppercase">/ 10min</span></p>
+                        </div>
+                        <div class="bg-surface-container-low p-4 rounded-xl border border-transparent group-hover:border-outline-variant/10 transition-colors">
+                            <p class="text-[9px] font-bold text-slate-400 uppercase tracking-widest mb-1">Maternal HR</p>
+                            <p class="text-xl font-black font-headline text-slate-900">115 <span class="text-[10px] font-bold text-slate-500 uppercase">BPM</span></p>
+                        </div>
+                    </div>
+                    <div class="pt-4 border-t border-outline-variant/10 flex justify-between items-center text-xs font-bold text-primary group-hover:text-primary-container transition-colors">
+                        <span>View Full Profile</span>
+                        <span class="material-symbols-outlined text-[16px] group-hover:translate-x-1 transition-transform">arrow_forward</span>
+                    </div>
+                </a>
+
+                <a href="patient-detail-alice-r.html" class="glass-card rounded-[2rem] shadow-[0px_12px_32px_rgba(24,28,32,0.06)] p-8 group hover:shadow-xl hover:-translate-y-1 transition-all duration-300 border border-transparent hover:border-error/20 outline-none block">
+                    <div class="flex justify-between items-start mb-6">
+                        <div class="flex gap-4">
+                            <img alt="Elena S." class="w-14 h-14 rounded-2xl object-cover ring-4 ring-error/5 group-hover:ring-error/10 transition-all" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDecdVkMh55G0-TYhsZ4zb9yxnoP9UeXs_RAmbNLTgqaMTS5looiRFqoqQSWIOWw-GpdVgCgzEIBzvXEvim2PEvYkDl8NX4T3RKT-h-QCbE6xQjyWgeaUA4MzUy7K0xTUhIn2Zs2GCnmfeH0PlnQou0a_CHNzFUmMiqOl_H7v7ax8L2O1FG3UA_DczZHPUjXS2sTaPdmWt2LyAsOZt-2AHF4FpG6uE6g7P-JqhkeK8jiKeM0Ugip_5KcxNTtQDYDUwelvUl4ylFk_di"/>
+                            <div>
+                                <h3 class="text-xl font-bold text-slate-900 font-manrope group-hover:text-primary transition-colors">Elena S.</h3>
+                                <p class="text-xs text-slate-500 font-medium mt-1">22 Weeks  •  ID: #VTL-2098</p>
+                            </div>
+                        </div>
+                        <span class="px-3 py-1.5 bg-error-container text-on-error-container text-[10px] font-extrabold tracking-widest rounded-md uppercase">CRITICAL</span>
+                    </div>
+                    <div class="space-y-5 mb-8">
+                        <div class="flex items-center justify-between text-xs pb-3 border-b border-outline-variant/10">
+                            <span class="text-slate-500 font-bold uppercase tracking-wider">Location</span>
+                            <span class="text-slate-900 font-bold">Remote (Home)</span>
+                        </div>
+                        <div class="space-y-2">
+                            <div class="flex justify-between items-end mb-1">
+                                <span class="text-xs font-bold text-slate-700 uppercase tracking-widest">Composite Stability</span>
+                                <span class="text-sm font-extrabold text-error">25%</span>
+                            </div>
+                            <div class="w-full h-1.5 bg-error-container rounded-full overflow-hidden">
+                                <div class="h-full bg-error rounded-full transition-all duration-1000" style="width: 25%"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-2 gap-4 mb-8">
+                        <div class="bg-surface-container-low p-4 rounded-xl border border-transparent group-hover:border-outline-variant/10 transition-colors">
+                            <p class="text-[9px] font-bold text-slate-400 uppercase tracking-widest mb-1">Blood Glucose</p>
+                            <p class="text-xl font-black font-headline text-error">185 <span class="text-[10px] font-bold text-slate-500 uppercase">mg/dL</span></p>
+                        </div>
+                        <div class="bg-surface-container-low p-4 rounded-xl border border-transparent group-hover:border-outline-variant/10 transition-colors">
+                            <p class="text-[9px] font-bold text-slate-400 uppercase tracking-widest mb-1">Fetal Movement</p>
+                            <p class="text-xl font-black font-headline text-slate-900">Normal</p>
+                        </div>
+                    </div>
+                    <div class="pt-4 border-t border-outline-variant/10 flex justify-between items-center text-xs font-bold text-primary group-hover:text-primary-container transition-colors">
+                        <span>View Full Profile</span>
+                        <span class="material-symbols-outlined text-[16px] group-hover:translate-x-1 transition-transform">arrow_forward</span>
+                    </div>
+                </a>
+
+            </div>
+
+            <footer class="glass-panel rounded-[2rem] p-8 border border-white flex flex-col md:flex-row items-center justify-between gap-6 shadow-sm mt-4">
+                <div class="flex items-center gap-10 flex-wrap justify-center">
+                    <div class="space-y-1">
+                        <p class="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest">Facility Status</p>
+                        <div class="flex items-center gap-2">
+                            <span class="w-2.5 h-2.5 rounded-full bg-tertiary"></span>
+                            <p class="text-sm font-bold text-slate-900">Normal Operations</p>
+                        </div>
+                    </div>
+                    <div class="hidden md:block w-[1px] h-10 bg-slate-200/50"></div>
+                    <div class="space-y-1">
+                        <p class="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest">Staffing Level</p>
+                        <p class="text-sm font-bold text-slate-900">92% <span class="text-xs font-medium text-slate-500 ml-1">On Duty</span></p>
+                    </div>
+                    <div class="hidden md:block w-[1px] h-10 bg-slate-200/50"></div>
+                    <div class="space-y-1">
+                        <p class="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest">Active RPM Alerts</p>
+                        <p class="text-sm font-bold text-error">4 Critical Notifications</p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-4 glass-card py-2 px-5 rounded-full shadow-sm border border-outline-variant/10">
+                    <p class="text-xs font-bold text-slate-500">Auto-refreshing every 30s</p>
+                    <div class="w-6 h-6 rounded-full flex items-center justify-center">
+                        <span class="material-symbols-outlined text-[18px] text-primary animate-spin">sync</span>
+                    </div>
+                </div>
+            </footer>
+        </div>
+    </main>
+
+    <a href="coming-soon.html" class="fixed bottom-10 right-10 w-16 h-16 rounded-full bg-error text-white shadow-2xl flex items-center justify-center hover:scale-110 active:scale-95 transition-all z-50 group hover:shadow-error/40 outline-none">
+        <span class="material-symbols-outlined text-[28px] group-hover:animate-pulse" style="font-variation-settings: 'FILL' 1;">emergency</span>
+    </a>
+
+    <script src="../js/app.js"></script>
+</body>
+</html>

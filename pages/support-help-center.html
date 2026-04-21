@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>Support & Help Center | Clinical Dashboard</title>
+    
+    <link href="https://fonts.googleapis.com" rel="preconnect">
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Manrope:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#00497d", "primary-fixed": "#d1e4ff", "primary-container": "#0061a4",
+                        "tertiary": "#084e57", "tertiary-fixed": "#b2ecf7", "secondary": "#535f70",
+                        "secondary-fixed": "#d7e3f8", "error": "#ba1a1a", "error-container": "#ffdad6",
+                        "surface": "#f7f9fe", "surface-container-highest": "#dfe3e8",
+                        "surface-container-lowest": "#ffffff", "surface-container-low": "#f1f4f9",
+                        "on-surface": "#181c20", "outline": "#717782", "outline-variant": "#c1c7d2"
+                    },
+                    fontFamily: { headline: ["Manrope"], body: ["Inter"], label: ["Inter"] }
+                }
+            }
+        }
+    </script>
+    <style>
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        body { font-family: 'Inter', sans-serif; }
+        h1, h2, h3, .font-headline { font-family: 'Manrope', sans-serif; }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+            /* --- Glassmorphism Theme --- */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.45) !important;
+            backdrop-filter: blur(16px) saturate(180%);
+            -webkit-backdrop-filter: blur(16px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.5) !important;
+            box-shadow: 0 8px 32px 0 rgba(0, 73, 125, 0.08);
+        }
+        .glass-nav {
+            background: rgba(247, 249, 254, 0.6) !important;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.3) !important;
+        }
+        .bg-surface { background: #f0f4f9 !important; }
+    </style>
+</head>
+<body class="bg-surface text-on-surface flex overflow-hidden selection:bg-primary-fixed selection:text-[#001d36]">
+    <div class="fixed inset-0 z-0 pointer-events-none overflow-hidden">
+        <div class="absolute -top-32 -left-32 w-[600px] h-[600px] bg-blue-300 rounded-full blur-[120px] opacity-40"></div>
+        <div class="absolute bottom-0 right-0 w-[700px] h-[700px] bg-teal-300 rounded-full blur-[150px] opacity-40"></div>
+    </div>
+
+    <aside id="sidebar-target" class="h-screen w-64 fixed left-0 top-0 bg-[#f1f4f9] shadow-[0px_12px_32px_rgba(24,28,32,0.06)] flex flex-col py-8 gap-6 z-50"></aside>
+
+    <main class="ml-64 flex-1 h-screen overflow-y-auto bg-surface flex flex-col">
+        
+        <header class="flex justify-between items-center w-full px-8 py-4 sticky top-0 z-40 glass-nav">
+            <h1 class="font-headline font-black text-2xl text-slate-900 tracking-tight">Support & Help Center</h1>
+            <div class="flex items-center gap-6">
+                <div class="flex items-center gap-4 text-outline">
+                    <button class="material-symbols-outlined hover:text-primary transition-colors outline-none relative">
+                        notifications
+                        <span class="absolute top-0 right-0 w-2 h-2 bg-error rounded-full border-2 border-white"></span>
+                    </button>
+                    <button class="material-symbols-outlined hover:text-primary transition-colors outline-none" style="font-variation-settings: 'FILL' 1;">help_outline</button>
+                </div>
+                <div class="h-8 w-[1px] bg-outline-variant/30"></div>
+                <div class="w-10 h-10 rounded-full overflow-hidden border-2 border-primary/20">
+                    <img alt="User profile" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC1Ys0pnjpc_Ht9-Q9QENv5EjkaL8OCkjQlXiiBuM-SUFFU4EuO1oo2Hk5DsuCF0gK3-mt0PlcCwQYoddvCrVQ3h7TUdwzjCYPZTDlHmScpf6olUMdqVv169XQFbZv7T9G5TMgfCQz-Bz78nxpJzsIHYkPked4ppg8guALIvnezu6PZYzuQGu_oyiR-srGxMGVtCnIAS-csRuyzjXrbk2eLvvSne_O10azFYsdk54gOn1cV0Fxayz-vpRgH4kdS31yezgXfNvHiQWqp"/>
+                </div>
+            </div>
+        </header>
+
+        <div class="p-12 max-w-6xl mx-auto w-full flex-1 space-y-12">
+            
+            <section class="w-full">
+                <div class="relative group">
+                    <div class="absolute inset-y-0 left-6 flex items-center pointer-events-none">
+                        <span class="material-symbols-outlined text-outline group-focus-within:text-primary transition-colors">search</span>
+                    </div>
+                    <input class="w-full bg-surface-container-highest border-none border-b-2 border-outline-variant/15 focus:ring-0 focus:border-primary focus:glass-card py-6 pl-16 pr-8 rounded-t-2xl text-lg font-body placeholder:text-outline transition-all duration-300 outline-none shadow-sm" placeholder="Search for clinical guides or technical help..." type="text">
+                </div>
+            </section>
+
+            <section class="space-y-6">
+                <div class="flex items-baseline justify-between">
+                    <h2 class="text-xl font-headline font-bold text-on-surface">Quick Help</h2>
+                    <span class="text-xs font-label uppercase tracking-widest text-outline font-bold">Common Topics</span>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div onclick="alert('Opening Device Sync troubleshooting guide...')" class="glass-card p-8 rounded-[2rem] shadow-[0px_12px_32px_rgba(24,28,32,0.06)] group hover:-translate-y-1 hover:shadow-xl transition-all duration-300 cursor-pointer border border-transparent hover:border-primary/20">
+                        <div class="flex items-start justify-between mb-6">
+                            <div class="p-3.5 bg-primary/10 text-primary rounded-2xl"><span class="material-symbols-outlined text-[24px]">watch</span></div>
+                            <span class="material-symbols-outlined text-outline group-hover:text-primary group-hover:translate-x-1 transition-all">arrow_forward</span>
+                        </div>
+                        <h3 class="text-lg font-headline font-bold mb-2">Device Sync Issues</h3>
+                        <p class="text-secondary text-sm leading-relaxed font-medium">Troubleshoot heart-rate monitors, surgical telemetry, and diagnostic tablet connectivity.</p>
+                    </div>
+
+                    <div onclick="alert('Opening AI interpretation models...')" class="glass-card p-8 rounded-[2rem] shadow-[0px_12px_32px_rgba(24,28,32,0.06)] group hover:-translate-y-1 hover:shadow-xl transition-all duration-300 cursor-pointer border border-transparent hover:border-tertiary/20">
+                        <div class="flex items-start justify-between mb-6">
+                            <div class="p-3.5 bg-tertiary/10 text-tertiary rounded-2xl"><span class="material-symbols-outlined text-[24px]">psychology</span></div>
+                            <span class="material-symbols-outlined text-outline group-hover:text-tertiary group-hover:translate-x-1 transition-all">arrow_forward</span>
+                        </div>
+                        <h3 class="text-lg font-headline font-bold mb-2">Interpreting AI Alerts</h3>
+                        <p class="text-secondary text-sm leading-relaxed font-medium">Understanding Stitch AI's predictive scoring models and confidence intervals for patient risk.</p>
+                    </div>
+
+                    <div onclick="alert('Opening Security & Privacy policy portal...')" class="glass-card p-8 rounded-[2rem] shadow-[0px_12px_32px_rgba(24,28,32,0.06)] group hover:-translate-y-1 hover:shadow-xl transition-all duration-300 cursor-pointer border border-transparent hover:border-slate-500/20">
+                        <div class="flex items-start justify-between mb-6">
+                            <div class="p-3.5 bg-surface-container-highest text-secondary rounded-2xl"><span class="material-symbols-outlined text-[24px]">security</span></div>
+                            <span class="material-symbols-outlined text-outline group-hover:text-secondary group-hover:translate-x-1 transition-all">arrow_forward</span>
+                        </div>
+                        <h3 class="text-lg font-headline font-bold mb-2">Security & Privacy</h3>
+                        <p class="text-secondary text-sm leading-relaxed font-medium">HIPAA compliance protocols, end-to-end encryption details, and user access control management.</p>
+                    </div>
+
+                    <div onclick="alert('Opening Video Library...')" class="glass-card p-8 rounded-[2rem] shadow-[0px_12px_32px_rgba(24,28,32,0.06)] group hover:-translate-y-1 hover:shadow-xl transition-all duration-300 cursor-pointer border border-transparent hover:border-error/20">
+                        <div class="flex items-start justify-between mb-6">
+                            <div class="p-3.5 bg-error/10 text-error rounded-2xl"><span class="material-symbols-outlined text-[24px]">play_circle</span></div>
+                            <span class="material-symbols-outlined text-outline group-hover:text-error group-hover:translate-x-1 transition-all">arrow_forward</span>
+                        </div>
+                        <h3 class="text-lg font-headline font-bold mb-2">Video Tutorials</h3>
+                        <p class="text-secondary text-sm leading-relaxed font-medium">Short walkthroughs on Stitch AI features, dashboard customization, and report generation.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="pt-8 pb-12">
+                <div class="glass-card border border-outline-variant/15 shadow-sm rounded-[2.5rem] p-10 flex flex-col md:flex-row items-center justify-between gap-10">
+                    <div class="flex-1 space-y-4 text-center md:text-left">
+                        <div class="inline-flex items-center gap-2 px-3 py-1.5 bg-primary/10 text-primary rounded-full mb-2">
+                            <span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+                            <span class="text-[10px] font-bold uppercase tracking-wider">Direct Assistance</span>
+                        </div>
+                        <h2 class="text-3xl font-headline font-extrabold text-slate-900 leading-tight">Contact a Clinical Specialist</h2>
+                        <p class="text-outline text-base max-w-md mx-auto md:mx-0 font-medium">Our dedicated team of medical integration experts is available 24/7 to assist with critical system questions.</p>
+                    </div>
+                    <div class="flex flex-col sm:flex-row gap-4 w-full md:w-auto shrink-0">
+                        <button onclick="alert('Connecting to Live Chat representative...')" class="flex items-center justify-center gap-3 bg-gradient-to-br from-primary to-primary-container text-white px-8 py-4 rounded-xl font-bold text-base shadow-lg shadow-primary/20 hover:-translate-y-0.5 hover:shadow-xl transition-all duration-300 outline-none">
+                            <span class="material-symbols-outlined text-[20px]">chat</span> Live Chat
+                        </button>
+                        <button onclick="alert('Dialing Priority Support Line: 1-800-555-0199...')" class="flex items-center justify-center gap-3 glass-card text-primary px-8 py-4 rounded-xl font-bold text-base border border-outline-variant/20 hover:bg-surface-container-low hover:-translate-y-0.5 transition-all duration-300 shadow-sm outline-none">
+                            <span class="material-symbols-outlined text-[20px]">call</span> Priority Phone Line
+                        </button>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <script src="../js/app.js"></script>
+</body>
+</html>
+
+
+
+

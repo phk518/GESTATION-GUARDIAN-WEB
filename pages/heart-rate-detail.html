@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>Heart Rate Analysis | Clinical Dashboard</title>
+    
+    <link href="https://fonts.googleapis.com" rel="preconnect">
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Manrope:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#00497d", "primary-fixed": "#d1e4ff", "primary-container": "#0061a4",
+                        "tertiary": "#084e57", "tertiary-fixed": "#b2ecf7", "secondary": "#535f70",
+                        "secondary-fixed": "#d7e3f8", "error": "#ba1a1a", "error-container": "#ffdad6",
+                        "surface": "#f7f9fe", "surface-container-highest": "#dfe3e8",
+                        "surface-container-lowest": "#ffffff", "surface-container-low": "#f1f4f9",
+                        "on-surface": "#181c20", "outline": "#717782", "outline-variant": "#c1c7d2",
+                        "on-error-container": "#93000a", "on-surface-variant": "#414750"
+                    },
+                    fontFamily: { headline: ["Manrope"], body: ["Inter"], label: ["Inter"] }
+                }
+            }
+        }
+    </script>
+    <style>
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        body { font-family: 'Inter', sans-serif; }
+        h1, h2, h3, .font-headline { font-family: 'Manrope', sans-serif; }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+        
+        .patient-card-shadow { box-shadow: 0px 12px 32px rgba(24, 28, 32, 0.06); }
+            /* --- Glassmorphism Theme --- */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.45) !important;
+            backdrop-filter: blur(16px) saturate(180%);
+            -webkit-backdrop-filter: blur(16px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.5) !important;
+            box-shadow: 0 8px 32px 0 rgba(0, 73, 125, 0.08);
+        }
+        .glass-nav {
+            background: rgba(247, 249, 254, 0.6) !important;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.3) !important;
+        }
+        .bg-surface { background: #f0f4f9 !important; }
+    </style>
+</head>
+<body class="bg-surface text-on-surface flex overflow-hidden selection:bg-primary-fixed selection:text-[#001d36]">
+    <div class="fixed inset-0 z-0 pointer-events-none overflow-hidden">
+        <div class="absolute -top-32 -left-32 w-[600px] h-[600px] bg-blue-300 rounded-full blur-[120px] opacity-40"></div>
+        <div class="absolute bottom-0 right-0 w-[700px] h-[700px] bg-teal-300 rounded-full blur-[150px] opacity-40"></div>
+    </div>
+
+    <aside id="sidebar-target" class="h-screen w-64 fixed left-0 top-0 bg-[#f1f4f9] shadow-[0px_12px_32px_rgba(24,28,32,0.06)] flex flex-col py-8 gap-6 z-50"></aside>
+
+    <main class="ml-64 flex-1 h-screen overflow-y-auto flex flex-col relative z-10">
+        
+        <header class="flex justify-between items-center w-full px-10 py-4 sticky top-0 z-40 glass-nav">
+            <div class="flex items-center gap-6 w-1/2">
+                <div class="relative w-full max-w-md group">
+                    <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-primary transition-colors text-lg">search</span>
+                    <input class="w-full pl-12 pr-4 py-2.5 bg-surface-container-highest/50 border-none rounded-full text-sm focus:ring-2 focus:ring-primary focus:glass-card transition-all outline-none" placeholder="Search patient or records..." type="text"/>
+                </div>
+            </div>
+            <div class="flex items-center gap-6">
+                <div class="flex items-center gap-4 text-outline">
+                    <a href="coming-soon.html" class="material-symbols-outlined hover:text-primary transition-colors outline-none relative block">
+                        notifications
+                        <span class="absolute top-0 right-0 w-2 h-2 bg-error rounded-full border-2 border-white"></span>
+                    </a>
+                    <a href="coming-soon.html" class="material-symbols-outlined hover:text-primary transition-colors outline-none block">hertory</a>
+                    <a href="coming-soon.html" class="material-symbols-outlined hover:text-primary transition-colors outline-none block">chat_bubble</a>
+                </div>
+                <div class="h-8 w-[1px] bg-outline-variant opacity-20"></div>
+                <div class="flex items-center gap-3">
+                    <div class="text-right">
+                        <p class="text-sm font-semibold text-primary">Dr. Julianne Vane</p>
+                        <p class="text-[10px] text-outline font-medium">Senior Cardiologist</p>
+                    </div>
+                    <img alt="User profile" class="w-10 h-10 rounded-full border-2 border-primary-container object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCFp6VU1hcypbLaJMKDcWN2jKXW-KlZhirSBtqc9dKeilxgSMUt8hAuoxp2R23zSyWKM9Ok0YOtJKYKGFIWxi2goyf6o4akLJ3U41qb6x92EjUiz5kuLjap7Rk60ZZwOf1rjsBs9r2LOTy4nejLy0eAnLEA4fdQhJhE6y6CwSmCF1U2dk8NMvNcfCw4MeWQPJ3ew0HJdazOMpmoMzCoIXQp3tb92d4OLpKZe91-8vlrb1dJ2t3_fWR-pLx7wV41r6pkvb--iAkXPhLZ"/>
+                </div>
+            </div>
+        </header>
+
+        <div class="p-10 space-y-8 max-w-[1400px] mx-auto w-full">
+            
+            <header class="flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
+                <div>
+                    <nav class="flex items-center gap-2 text-xs font-medium text-outline mb-2">
+                        <a href="../index.html" class="hover:text-primary transition-colors">Patients</a>
+                        <span class="material-symbols-outlined text-[14px]">chevron_right</span>
+                        <a href="archive/patient-detail-alice-r.html" class="text-primary font-semibold hover:underline">Alice R.</a>
+                        <span class="material-symbols-outlined text-[14px]">chevron_right</span>
+                        <span class="text-on-surface">Vital Monitoring</span>
+                    </nav>
+                    <h2 class="text-4xl font-black font-headline text-on-surface tracking-tight">Heart Rate Deep-dive</h2>
+                </div>
+                <div class="flex flex-wrap gap-3">
+                    <a href="coming-soon.html" class="px-5 py-2.5 glass-card text-primary font-bold text-sm rounded-xl shadow-sm border border-outline-variant/20 hover:bg-primary/5 transition-all outline-none inline-block">
+                        Generate Report
+                    </a>
+                    <a href="coming-soon.html" class="px-5 py-2.5 bg-gradient-to-r from-primary to-primary-container text-white font-bold text-sm rounded-xl shadow-md hover:shadow-lg hover:-translate-y-0.5 transition-all outline-none inline-block">
+                        Set Alert Thresholds
+                    </a>
+                </div>
+            </header>
+
+            <div class="grid grid-cols-12 gap-6">
+                
+                <div class="col-span-12 lg:col-span-8 glass-card rounded-2xl p-8 shadow-[0px_12px_32px_rgba(24,28,32,0.06)] relative overflow-hidden hover:shadow-xl transition-all duration-300">
+                    <div class="relative z-10">
+                        <div class="flex justify-between items-start mb-12">
+                            <div>
+                                <span class="bg-error-container text-on-error-container text-[10px] font-extrabold px-3 py-1.5 rounded-full uppercase tracking-widest inline-flex items-center gap-1.5">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-error animate-pulse"></span>
+                                    Live Monitoring
+                                </span>
+                                <h3 class="text-sm font-bold text-outline mt-5 uppercase tracking-wider">Current Heart Rate</h3>
+                            </div>
+                            <div class="text-right flex items-baseline">
+                                <span class="text-7xl font-black font-headline text-primary tracking-tighter">74</span>
+                                <span class="text-xl font-bold text-outline-variant ml-2 uppercase">BPM</span>
+                            </div>
+                        </div>
+                        
+                        <div class="h-48 w-full relative glass-card/50 rounded-xl p-2">
+                            <canvas id="liveSmartwatchChart"></canvas>
+                        </div>
+
+                    </div>
+                    <div class="absolute top-0 right-0 w-80 h-80 bg-primary/5 rounded-full -mr-32 -mt-32 blur-3xl pointer-events-none"></div>
+                </div>
+
+                <div class="col-span-12 lg:col-span-4 flex flex-col gap-6">
+                    <div class="bg-surface-container-low rounded-2xl p-8 flex-1 flex flex-col justify-between border border-outline-variant/10 hover:border-outline-variant/30 transition-colors">
+                        <div>
+                            <div class="flex items-center gap-2 mb-3">
+                                <span class="material-symbols-outlined text-tertiary text-[18px]">monitor_heart</span>
+                                <span class="text-[10px] font-extrabold text-outline uppercase tracking-widest">Resting Heart Rate</span>
+                            </div>
+                            <p class="text-4xl font-black font-headline text-tertiary">62 <span class="text-sm font-bold text-outline">BPM</span></p>
+                        </div>
+                        <div class="mt-6 pt-5 border-t border-outline-variant/15">
+                            <p class="text-xs text-on-surface-variant font-medium leading-relaxed">Alice is within the 15th percentile for her age group. Consistent with athletic performance.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-surface-container-low rounded-2xl p-8 flex-1 flex flex-col justify-between border border-outline-variant/10 hover:border-outline-variant/30 transition-colors">
+                        <div>
+                            <div class="flex items-center gap-2 mb-3">
+                                <span class="material-symbols-outlined text-primary text-[18px]">show_chart</span>
+                                <span class="text-[10px] font-extrabold text-outline uppercase tracking-widest">HRV (Stress Index)</span>
+                            </div>
+                            <p class="text-4xl font-black font-headline text-primary">84 <span class="text-sm font-bold text-outline">ms</span></p>
+                        </div>
+                        <div class="mt-6 pt-5 border-t border-outline-variant/15">
+                            <div class="h-1.5 w-full bg-outline-variant/20 rounded-full overflow-hidden">
+                                <div class="h-full w-[84%] bg-primary rounded-full"></div>
+                            </div>
+                            <p class="text-[10px] font-bold uppercase tracking-widest text-outline mt-3">Optimal recovery state</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <section class="glass-card rounded-2xl p-8 shadow-[0px_12px_32px_rgba(24,28,32,0.06)]">
+                <div class="flex justify-between items-center mb-10">
+                    <h3 class="text-xl font-bold font-headline text-on-surface">hertorical Trend Analysis</h3>
+                    <div class="flex bg-surface-container-low p-1.5 rounded-xl border border-outline-variant/10">
+                        <button class="px-5 py-1.5 text-xs font-bold glass-card text-primary rounded-lg shadow-sm">24h</button>
+                        <button class="px-5 py-1.5 text-xs font-bold text-outline hover:text-primary transition-colors">7d</button>
+                        <button class="px-5 py-1.5 text-xs font-bold text-outline hover:text-primary transition-colors">30d</button>
+                    </div>
+                </div>
+                
+                <div class="h-64 w-full relative">
+                    <div class="absolute inset-0 flex flex-col justify-between opacity-30 pointer-events-none">
+                        <div class="border-b border-outline-variant/40 w-full h-0"></div>
+                        <div class="border-b border-outline-variant/40 w-full h-0"></div>
+                        <div class="border-b border-outline-variant/40 w-full h-0"></div>
+                        <div class="border-b border-outline-variant/40 w-full h-0"></div>
+                    </div>
+                    <svg class="w-full h-full relative z-10" preserveAspectRatio="none" viewBox="0 0 1000 200">
+                        <defs>
+                            <linearGradient id="chartGradient" x1="0%" x2="0%" y1="0%" y2="100%">
+                                <stop offset="0%" stop-color="#00497d" stop-opacity="0.15"></stop>
+                                <stop offset="100%" stop-color="#00497d" stop-opacity="0"></stop>
+                            </linearGradient>
+                        </defs>
+                        <path d="M0 140 Q100 120 200 150 T400 100 T600 130 T800 80 T1000 110 L1000 200 L0 200 Z" fill="url(#chartGradient)"></path>
+                        <path d="M0 140 Q100 120 200 150 T400 100 T600 130 T800 80 T1000 110" fill="none" stroke="#00497d" stroke-linecap="round" stroke-width="4"></path>
+                        <line opacity="0.6" stroke="#ba1a1a" stroke-dasharray="8,8" stroke-width="1.5" x1="0" x2="1000" y1="160" y2="160"></line>
+                    </svg>
+                    <div class="flex justify-between mt-6 text-[10px] font-bold text-outline uppercase tracking-widest px-2">
+                        <span>12:00 AM</span>
+                        <span>04:00 AM</span>
+                        <span>08:00 AM</span>
+                        <span>12:00 PM</span>
+                        <span>04:00 PM</span>
+                        <span>08:00 PM</span>
+                    </div>
+                </div>
+            </section>
+
+            <section class="grid grid-cols-12 gap-6">
+                <div class="col-span-12 glass-card rounded-2xl shadow-[0px_12px_32px_rgba(24,28,32,0.06)] overflow-hidden">
+                    <div class="p-8 border-b border-outline-variant/15 flex justify-between items-center bg-surface-container-low/30">
+                        <div>
+                            <h3 class="text-xl font-bold font-headline text-on-surface">Sync Operations</h3>
+                            <p class="text-sm text-outline mt-1 font-medium">Manage device connectivity and data polling frequency</p>
+                        </div>
+                        <button onclick="alert('Fetching latest telemetry from device...')" class="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-primary to-primary-container text-white rounded-xl font-bold text-sm shadow-md hover:shadow-lg hover:-translate-y-0.5 transition-all outline-none">
+                            <span class="material-symbols-outlined text-lg">sync</span>
+                            Fetch Latest Data
+                        </button>
+                    </div>
+                    
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left">
+                            <thead>
+                                <tr class="glass-card border-b border-outline-variant/10">
+                                    <th class="px-8 py-5 text-[10px] font-extrabold text-outline uppercase tracking-widest">Sync Timestamp</th>
+                                    <th class="px-8 py-5 text-[10px] font-extrabold text-outline uppercase tracking-widest">Source Device</th>
+                                    <th class="px-8 py-5 text-[10px] font-extrabold text-outline uppercase tracking-widest">Status</th>
+                                    <th class="px-8 py-5 text-[10px] font-extrabold text-outline uppercase tracking-widest">Avg BPM</th>
+                                    <th class="px-8 py-5 text-[10px] font-extrabold text-outline uppercase tracking-widest text-right">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-outline-variant/10">
+                                <tr class="hover:bg-surface-container-low/50 transition-colors">
+                                    <td class="px-8 py-5 text-sm font-semibold text-on-surface">Oct 24, 2023 - 10:45:12 AM</td>
+                                    <td class="px-8 py-5 text-sm text-on-surface-variant font-medium">V-Monitor Gen 4</td>
+                                    <td class="px-8 py-5">
+                                        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-tertiary/10 text-tertiary text-[10px] font-bold uppercase tracking-wider">
+                                            <span class="w-1.5 h-1.5 rounded-full bg-tertiary"></span> COMPLETED
+                                        </span>
+                                    </td>
+                                    <td class="px-8 py-5 text-sm font-bold text-primary">72 BPM</td>
+                                    <td class="px-8 py-5 text-right">
+                                        <button class="text-outline hover:text-primary transition-colors outline-none p-2 hover:bg-primary/5 rounded-lg">
+                                            <span class="material-symbols-outlined">more_horiz</span>
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr class="hover:bg-surface-container-low/50 transition-colors">
+                                    <td class="px-8 py-5 text-sm font-semibold text-on-surface">Oct 24, 2023 - 10:30:05 AM</td>
+                                    <td class="px-8 py-5 text-sm text-on-surface-variant font-medium">V-Monitor Gen 4</td>
+                                    <td class="px-8 py-5">
+                                        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-tertiary/10 text-tertiary text-[10px] font-bold uppercase tracking-wider">
+                                            <span class="w-1.5 h-1.5 rounded-full bg-tertiary"></span> COMPLETED
+                                        </span>
+                                    </td>
+                                    <td class="px-8 py-5 text-sm font-bold text-primary">74 BPM</td>
+                                    <td class="px-8 py-5 text-right">
+                                        <button class="text-outline hover:text-primary transition-colors outline-none p-2 hover:bg-primary/5 rounded-lg">
+                                            <span class="material-symbols-outlined">more_horiz</span>
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr class="hover:bg-surface-container-low/50 transition-colors">
+                                    <td class="px-8 py-5 text-sm font-semibold text-on-surface">Oct 24, 2023 - 10:15:00 AM</td>
+                                    <td class="px-8 py-5 text-sm text-on-surface-variant font-medium">Manual Entry</td>
+                                    <td class="px-8 py-5">
+                                        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-surface-container-highest text-outline text-[10px] font-bold uppercase tracking-wider">
+                                            <span class="w-1.5 h-1.5 rounded-full bg-outline"></span> ARCHIVED
+                                        </span>
+                                    </td>
+                                    <td class="px-8 py-5 text-sm font-bold text-outline">68 BPM</td>
+                                    <td class="px-8 py-5 text-right">
+                                        <button class="text-outline hover:text-primary transition-colors outline-none p-2 hover:bg-primary/5 rounded-lg">
+                                            <span class="material-symbols-outlined">more_horiz</span>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <script src="../js/app.js"></script>
+</body>
+</html>
+
+
+

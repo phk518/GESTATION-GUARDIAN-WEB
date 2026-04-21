@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>Feature in Development | Clinical Dashboard</title>
+    
+    <link href="https://fonts.googleapis.com" rel="preconnect">
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Manrope:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#00497d", "primary-fixed": "#d1e4ff", "primary-container": "#0061a4",
+                        "tertiary": "#084e57", "tertiary-fixed": "#b2ecf7", "secondary": "#535f70",
+                        "surface": "#f7f9fe", "surface-container-highest": "#dfe3e8",
+                        "surface-container-lowest": "#ffffff", "surface-container-low": "#f1f4f9",
+                        "on-surface": "#181c20", "outline": "#717782", "outline-variant": "#c1c7d2"
+                    },
+                    fontFamily: { headline: ["Manrope"], body: ["Inter"], label: ["Inter"] }
+                }
+            }
+        }
+    </script>
+    <style>
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        body { font-family: 'Inter', sans-serif; }
+        h1, h2, h3, .font-headline { font-family: 'Manrope', sans-serif; }
+            /* --- Glassmorphism Theme --- */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.45) !important;
+            backdrop-filter: blur(16px) saturate(180%);
+            -webkit-backdrop-filter: blur(16px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.5) !important;
+            box-shadow: 0 8px 32px 0 rgba(0, 73, 125, 0.08);
+        }
+        .glass-nav {
+            background: rgba(247, 249, 254, 0.6) !important;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.3) !important;
+        }
+        .bg-surface { background: #f0f4f9 !important; }
+    </style>
+</head>
+<body class="bg-surface text-on-surface flex overflow-hidden">
+    <div class="fixed inset-0 z-0 pointer-events-none overflow-hidden">
+        <div class="absolute -top-32 -left-32 w-[600px] h-[600px] bg-blue-300 rounded-full blur-[120px] opacity-40"></div>
+        <div class="absolute bottom-0 right-0 w-[700px] h-[700px] bg-teal-300 rounded-full blur-[150px] opacity-40"></div>
+    </div>
+
+    <aside id="sidebar-target" class="h-screen w-64 fixed left-0 top-0 bg-[#f1f4f9] shadow-[0px_12px_32px_rgba(24,28,32,0.06)] flex flex-col py-8 gap-6 z-50"></aside>
+
+    <main class="ml-64 flex-1 h-screen flex flex-col relative bg-surface">
+        
+        <header class="flex justify-between items-center w-full px-8 py-4 sticky top-0 z-40 glass-nav">
+            <div class="flex items-center gap-6 w-1/2"></div>
+            <div class="flex items-center gap-6">
+                <div class="flex items-center gap-3">
+                    <div class="text-right">
+                        <p class="text-sm font-semibold text-primary">Dr. Julian Vance</p>
+                        <p class="text-[10px] text-outline font-medium">Chief of Surgery</p>
+                    </div>
+                    <img alt="User profile" class="w-10 h-10 rounded-full object-cover border-2 border-primary-container" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBVQw02d14xSlr9ieWpMrD__bDSPGh9LeIZ_YeNJJZrI5JUzK2c7-knSOxZEOtMMADdeVQLUkAF8OgH8WclrOZeIz0tNkTto2zp9n_ga4gubS8aUs9nZ9W3-Q3xzQJ-qoRx6DhiJP_X0MWpG_HaZ8ta0uLQvR7d9UoYg6wEtQXuVDYs14FCdGZAWYKZ6FeribPDd1OLgFP77MsmwpaqqsSXGqkDg6ORK8OKzMr2ADJddPf25CoM-bIc18CoTZOZtW91MW02__T-LJbR"/>
+                </div>
+            </div>
+        </header>
+
+        <div class="flex-1 flex items-center justify-center p-10">
+            <div class="glass-card p-12 rounded-[2rem] shadow-xl border border-outline-variant/15 max-w-lg text-center relative overflow-hidden">
+                <div class="absolute -top-10 -right-10 w-32 h-32 bg-primary/5 rounded-full blur-2xl"></div>
+                <div class="absolute -bottom-10 -left-10 w-32 h-32 bg-tertiary/5 rounded-full blur-2xl"></div>
+                
+                <div class="relative z-10">
+                    <div class="w-20 h-20 bg-surface-container-low rounded-2xl flex items-center justify-center mx-auto mb-6 border border-outline-variant/20">
+                        <span class="material-symbols-outlined text-4xl text-primary animate-pulse">architecture</span>
+                    </div>
+                    <h2 class="text-2xl font-extrabold font-headline text-slate-900 mb-3">Module in Development</h2>
+                    <p class="text-slate-500 text-sm leading-relaxed mb-8">
+                        Ther specific feature is slated for Phase 2 of the Clinical Dashboard rollout. It is currently being designed by our UX team.
+                    </p>
+                    <button onclick="hertory.back()" class="bg-primary text-white px-8 py-3 rounded-xl font-bold text-sm shadow-md hover:shadow-lg hover:-translate-y-0.5 transition-all outline-none flex items-center gap-2 mx-auto">
+                        <span class="material-symbols-outlined text-[18px]">arrow_back</span>
+                        Return to Previous Screen
+                    </button>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <script src="../js/app.js"></script>
+</body>
+</html>
+
+
+

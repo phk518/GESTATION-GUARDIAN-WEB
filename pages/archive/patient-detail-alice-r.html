@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>Alice R. Overview | Clinical Dashboard</title>
+    
+    <link href="https://fonts.googleapis.com" rel="preconnect">
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Manrope:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#00497d", "primary-fixed": "#d1e4ff", "primary-container": "#0061a4",
+                        "tertiary": "#084e57", "tertiary-fixed": "#b2ecf7", "secondary": "#535f70",
+                        "secondary-fixed": "#d7e3f8", "error": "#ba1a1a", "error-container": "#ffdad6",
+                        "surface": "#f7f9fe", "surface-container-highest": "#dfe3e8",
+                        "surface-container-lowest": "#ffffff", "surface-container-low": "#f1f4f9",
+                        "on-surface": "#181c20", "outline": "#717782", "outline-variant": "#c1c7d2",
+                        "on-surface-variant": "#414750", "tertiary-container": "#2b666f"
+                    },
+                    fontFamily: { headline: ["Manrope"], body: ["Inter"], label: ["Inter"] }
+                }
+            }
+        }
+    </script>
+    <style>
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        body { font-family: 'Inter', sans-serif; }
+        h1, h2, h3, .font-headline { font-family: 'Manrope', sans-serif; }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+        
+        .glass-card { background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(24px); border: 1px solid rgba(193, 199, 210, 0.2); }
+        .editorial-shadow { box-shadow: 0px 12px 32px rgba(24, 28, 32, 0.06); }
+            /* --- Glassmorphism Theme --- */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.45) !important;
+            backdrop-filter: blur(16px) saturate(180%);
+            -webkit-backdrop-filter: blur(16px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.5) !important;
+            box-shadow: 0 8px 32px 0 rgba(0, 73, 125, 0.08);
+        }
+        .glass-nav {
+            background: rgba(247, 249, 254, 0.6) !important;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.3) !important;
+        }
+        .bg-surface { background: #f0f4f9 !important; }
+    </style>
+</head>
+<body class="bg-surface text-on-surface flex overflow-hidden selection:bg-primary-fixed selection:text-[#001d36]">
+    <div class="fixed inset-0 z-0 pointer-events-none overflow-hidden">
+        <div class="absolute -top-32 -left-32 w-[600px] h-[600px] bg-blue-300 rounded-full blur-[120px] opacity-40"></div>
+        <div class="absolute bottom-0 right-0 w-[700px] h-[700px] bg-teal-300 rounded-full blur-[150px] opacity-40"></div>
+    </div>
+
+    <aside id="sidebar-target" class="h-screen w-64 fixed left-0 top-0 bg-[#f1f4f9] shadow-[0px_12px_32px_rgba(24,28,32,0.06)] flex flex-col py-8 gap-6 z-50"></aside>
+
+    <main class="ml-64 flex-1 h-screen overflow-y-auto flex flex-col bg-surface relative">
+        
+        <header class="flex justify-between items-center w-full px-8 py-4 sticky top-0 z-40 glass-nav">
+            <div class="flex items-center gap-6 w-1/2">
+                <div class="relative w-full max-w-md group">
+                    <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-primary transition-colors">search</span>
+                    <input class="w-full pl-10 pr-4 py-2 bg-surface-container-highest/50 border-none rounded-xl text-sm focus:ring-2 focus:ring-primary focus:glass-card transition-all outline-none" placeholder="Search clinical records..." type="text"/>
+                </div>
+            </div>
+            <div class="flex items-center gap-6">
+                <div class="flex items-center gap-4 text-outline">
+                    <a href="coming-soon.html" class="material-symbols-outlined hover:text-primary transition-colors relative outline-none block">
+                        notifications
+                        <span class="absolute top-0 right-0 w-2 h-2 bg-error rounded-full border-2 border-white"></span>
+                    </a>
+                    <a href="coming-soon.html" class="material-symbols-outlined hover:text-primary transition-colors outline-none block">hertory</a>
+                    <a href="coming-soon.html" class="material-symbols-outlined hover:text-primary transition-colors outline-none block">chat_bubble</a>
+                </div>
+                <div class="h-8 w-[1px] bg-outline-variant/30"></div>
+                <div class="flex items-center gap-3">
+                    <div class="text-right">
+                        <p class="text-sm font-semibold text-primary">Dr. Julianne Vane</p>
+                        <p class="text-[10px] text-outline font-medium">Senior Cardiologist</p>
+                    </div>
+                    <img alt="User profile" class="w-10 h-10 rounded-full object-cover border-2 border-primary-container" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDV1UZsOUewyTJ4NCAVa-TJqmeWxPu_NLBx90KAD3OAwRkZlsr0OfG7P0XQv-TR5SOHVYlWZSVbVZDtSpP-rKEy16oWp6hynavmRBKaQx4zNHXPi7mKOwGHJUIdPciFnuYHkkQjsys1Bm-eS4as_ralR68HPDW8NgD-w9FeOslVrWLLFhvn8K6Xo3qWP6nebkIMaPv6-7-bfdPTnV9nng8ARaXXnLuuSVOY5Kby3diM0MQYbTMT_ICFS19QzF5QFtEioB9gO5qIIyPm"/>
+                </div>
+            </div>
+        </header>
+
+        <div class="p-10 overflow-y-auto flex-1 max-w-[1400px] mx-auto w-full">
+            
+            <div class="mb-10 flex flex-col md:flex-row md:items-end justify-between gap-6">
+                <div>
+                    <nav class="flex items-center gap-2 text-xs text-outline font-medium uppercase tracking-widest mb-2">
+                        <a href="../index.html" class="hover:text-primary transition-colors">Patients</a>
+                        <span class="material-symbols-outlined text-[14px]">chevron_right</span>
+                        <span class="text-primary font-bold">Current Session</span>
+                    </nav>
+                    <h2 class="text-5xl font-headline font-extrabold text-slate-900 tracking-tight">Alice R.</h2>
+                    <div class="flex items-center gap-4 mt-4">
+                        <div class="flex items-center gap-2 bg-amber-50 px-4 py-1.5 rounded-full border border-amber-200">
+                            <span class="w-2.5 h-2.5 rounded-full bg-amber-500 animate-pulse"></span>
+                            <span class="text-amber-800 text-sm font-bold tracking-wide">Triage Status: AMBER</span>
+                        </div>
+                        <span class="text-sm text-outline font-medium italic">Last updated: 2 minutes ago</span>
+                    </div>
+                </div>
+                <div class="flex gap-3">
+                    <button onclick="alert('Generating Comprehensive Patient Report...')" class="glass-card text-primary px-6 py-2.5 rounded-xl font-bold text-sm editorial-shadow border border-outline-variant/10 hover:bg-surface-container-low transition-colors outline-none">
+                        Generate Report
+                    </button>
+                    <button onclick="alert('Opening Emergency Intervention Protocols...')" class="bg-primary text-white px-6 py-2.5 rounded-xl font-bold text-sm editorial-shadow hover:opacity-90 hover:shadow-lg transition-all hover:-translate-y-0.5 outline-none">
+                        Intervene
+                    </button>
+                </div>
+            </div>
+
+            <section class="mb-10">
+                <div class="glass-card rounded-[2rem] p-8 border-2 border-amber-500/30 shadow-[0px_12px_32px_rgba(24,28,32,0.06)] relative overflow-hidden">
+                    <div class="absolute -top-24 -right-24 w-64 h-64 bg-amber-500/10 rounded-full blur-3xl pointer-events-none"></div>
+                    
+                    <div class="relative z-10 flex flex-col lg:flex-row gap-8 items-center">
+                        
+                        <div class="w-full lg:w-1/3 border-b lg:border-b-0 lg:border-r border-outline-variant/20 pb-6 lg:pb-0 lg:pr-8 text-center lg:text-left">
+                            <div class="flex items-center justify-center lg:justify-start gap-2 mb-3">
+                                <span class="material-symbols-outlined text-amber-600 text-2xl" style="font-variation-settings: 'FILL' 1;">warning</span>
+                                <h3 class="font-headline font-extrabold text-xl text-slate-900 uppercase tracking-wide">Composite RAG Status</h3>
+                            </div>
+                            <div class="inline-flex items-center gap-3 bg-amber-50 border border-amber-200 px-4 py-2 rounded-xl mb-4">
+                                <span class="w-3 h-3 rounded-full bg-amber-500 animate-pulse shadow-[0_0_8px_rgba(245,158,11,0.6)]"></span>
+                                <span class="text-amber-800 font-black text-xl tracking-widest">AMBER ZONE</span>
+                            </div>
+                            <p class="text-xs text-slate-500 font-medium leading-relaxed">
+                                Patient has transitioned from GREEN to AMBER in the last 12 hours based on smartwatch telemetry compounding risk factors.
+                            </p>
+                        </div>
+
+                        <div class="w-full lg:w-1/3 flex flex-col gap-4">
+                            <h4 class="text-[10px] font-extrabold text-outline uppercase tracking-widest mb-1">Algorithmic Risk Breakdown</h4>
+                            
+                            <div class="flex items-center gap-4">
+                                <div class="w-2 h-8 rounded-full bg-error shrink-0"></div>
+                                <div class="flex-1">
+                                    <div class="flex justify-between text-xs font-bold mb-1">
+                                        <span class="text-slate-700">Autonomic Stress (HRV)</span>
+                                        <span class="text-error">RED</span>
+                                    </div>
+                                    <div class="w-full h-1.5 bg-slate-100 rounded-full overflow-hidden">
+                                        <div class="bg-error h-full rounded-full" style="width: 85%"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="flex items-center gap-4">
+                                <div class="w-2 h-8 rounded-full bg-amber-500 shrink-0"></div>
+                                <div class="flex-1">
+                                    <div class="flex justify-between text-xs font-bold mb-1">
+                                        <span class="text-slate-700">Vascular Resistance (Est.)</span>
+                                        <span class="text-amber-600">AMBER</span>
+                                    </div>
+                                    <div class="w-full h-1.5 bg-slate-100 rounded-full overflow-hidden">
+                                        <div class="bg-amber-500 h-full rounded-full" style="width: 65%"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="flex items-center gap-4">
+                                <div class="w-2 h-8 rounded-full bg-tertiary shrink-0"></div>
+                                <div class="flex-1">
+                                    <div class="flex justify-between text-xs font-bold mb-1">
+                                        <span class="text-slate-700">Sleep & Activity</span>
+                                        <span class="text-tertiary">GREEN</span>
+                                    </div>
+                                    <div class="w-full h-1.5 bg-slate-100 rounded-full overflow-hidden">
+                                        <div class="bg-tertiary h-full rounded-full" style="width: 20%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="w-full lg:w-1/3 bg-slate-50 p-5 rounded-2xl border border-outline-variant/20">
+                            <div class="flex items-center gap-2 mb-3">
+                                <span class="material-symbols-outlined text-primary text-lg">smart_toy</span>
+                                <span class="text-xs font-bold text-primary uppercase tracking-widest">Predictive Insight</span>
+                            </div>
+                            <p class="text-sm text-slate-800 font-medium leading-relaxed mb-4">
+                                Severe drop in nocturnal HRV combined with elevated resting heart rate indicates a <strong class="text-error">78% probability</strong> of a hypertensive spike within 48 hours.
+                            </p>
+                            <button onclick="alert('Pushing notification to patient companion app: Please take a manual blood pressure reading immediately.')" class="w-full bg-primary text-white py-2.5 rounded-lg font-bold text-xs shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all flex items-center justify-center gap-2 outline-none">
+                                <span class="material-symbols-outlined text-[16px]">send_to_mobile</span>
+                                Request Manual BP Reading
+                            </button>
+                        </div>
+                        
+                    </div>
+                </div>
+            </section>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+                
+                <a href="blood-pressure-detail.html" class="glass-card rounded-[2rem] p-8 editorial-shadow flex flex-col group hover:shadow-xl hover:-translate-y-1 hover:border-primary/20 transition-all duration-300">
+                    <div class="flex justify-between items-start mb-6">
+                        <div class="flex items-center gap-3">
+                            <div class="w-12 h-12 rounded-xl bg-red-50 flex items-center justify-center group-hover:scale-110 transition-transform">
+                                <span class="material-symbols-outlined text-red-600 text-2xl">bloodtype</span>
+                            </div>
+                            <h3 class="font-headline font-bold text-lg text-on-surface">Blood Pressure</h3>
+                        </div>
+                        <div class="flex items-center gap-1 text-[9px] font-extrabold text-tertiary bg-tertiary/10 px-2.5 py-1 rounded-full">
+                            <span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">watch</span> SYNCED
+                        </div>
+                    </div>
+                    <div class="mb-4">
+                        <span class="text-4xl font-headline font-extrabold text-slate-900">120/80</span>
+                        <span class="text-sm font-bold text-outline ml-1">mmHg</span>
+                    </div>
+                    <div class="flex-1 mt-4 relative h-24 overflow-hidden">
+                        <svg class="w-full h-full stroke-primary/30 fill-none stroke-[2.5]" viewBox="0 0 400 100">
+                            <path d="M0 50 Q 50 30, 100 60 T 200 40 T 300 70 T 400 50"></path>
+                            <path class="stroke-primary stroke-[3.5] group-hover:stroke-blue-500 transition-colors" d="M0 50 Q 50 30, 100 60 T 200 40 T 300 70 T 400 50" stroke-dasharray="400" stroke-dashoffset="100"></path>
+                        </svg>
+                        <div class="absolute bottom-0 left-0 w-full flex justify-between text-[10px] text-outline font-bold px-1">
+                            <span>1H</span><span>2H</span><span>6H</span>
+                        </div>
+                    </div>
+                </a>
+
+                <a href="heart-rate-detail.html" class="glass-card rounded-[2rem] p-8 editorial-shadow flex flex-col group hover:shadow-xl hover:-translate-y-1 hover:border-pink-500/20 transition-all duration-300">
+                    <div class="flex justify-between items-start mb-6">
+                        <div class="flex items-center gap-3">
+                            <div class="w-12 h-12 rounded-xl bg-pink-50 flex items-center justify-center group-hover:scale-110 transition-transform">
+                                <span class="material-symbols-outlined text-pink-600 text-2xl" style="font-variation-settings: 'FILL' 1;">favorite</span>
+                            </div>
+                            <h3 class="font-headline font-bold text-lg text-on-surface">Heart Rate</h3>
+                        </div>
+                        <div class="flex items-center gap-1 text-[9px] font-extrabold text-tertiary bg-tertiary/10 px-2.5 py-1 rounded-full">
+                            <span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">watch</span> SYNCED
+                        </div>
+                    </div>
+                    <div class="mb-4">
+                        <span class="text-4xl font-headline font-extrabold text-slate-900">74</span>
+                        <span class="text-sm font-bold text-outline ml-1">BPM</span>
+                    </div>
+                    <div class="flex-1 mt-4 relative h-24 overflow-hidden">
+                        <svg class="w-full h-full stroke-pink-500/20 fill-none stroke-[2.5]" viewBox="0 0 400 100">
+                            <polyline class="stroke-pink-500 stroke-[3] group-hover:stroke-pink-400 transition-colors" points="0,50 40,50 50,20 60,80 70,50 110,50 120,50 130,20 140,80 150,50 190,50 200,50 210,20 220,80 230,50 270,50 280,50 290,20 300,80 310,50 350,50 360,50 370,20 380,80 390,50 400,50"></polyline>
+                        </svg>
+                        <div class="absolute bottom-0 left-0 w-full flex justify-between text-[10px] text-outline font-bold px-1">
+                            <span>1H</span><span>2H</span><span>6H</span>
+                        </div>
+                    </div>
+                </a>
+
+                <a href="blood-oxygen-detail.html" class="glass-card rounded-[2rem] p-8 editorial-shadow flex flex-col group hover:shadow-xl hover:-translate-y-1 hover:border-blue-500/20 transition-all duration-300">
+                    <div class="flex justify-between items-start mb-6">
+                        <div class="flex items-center gap-3">
+                            <div class="w-12 h-12 rounded-xl bg-blue-50 flex items-center justify-center group-hover:scale-110 transition-transform">
+                                <span class="material-symbols-outlined text-blue-600 text-2xl">water_drop</span>
+                            </div>
+                            <h3 class="font-headline font-bold text-lg text-on-surface">Blood Oxygen</h3>
+                        </div>
+                        <div class="flex items-center gap-1 text-[9px] font-extrabold text-tertiary bg-tertiary/10 px-2.5 py-1 rounded-full">
+                            <span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">watch</span> SYNCED
+                        </div>
+                    </div>
+                    <div class="mb-4">
+                        <span class="text-4xl font-headline font-extrabold text-slate-900">98</span>
+                        <span class="text-sm font-bold text-outline ml-1">% SpO2</span>
+                    </div>
+                    <div class="flex-1 mt-4 relative h-24">
+                        <div class="w-full h-3 bg-surface-container-highest rounded-full overflow-hidden mt-8">
+                            <div class="w-[98%] h-full bg-blue-600 rounded-full group-hover:bg-blue-500 transition-colors"></div>
+                        </div>
+                        <div class="flex justify-between text-[10px] font-bold text-outline mt-3">
+                            <span>NORMAL (95-100%)</span>
+                            <span class="text-blue-600">OPTIMAL</span>
+                        </div>
+                    </div>
+                </a>
+
+                <a href="hrv-detail.html" class="glass-card rounded-[2rem] p-8 editorial-shadow flex flex-col group hover:shadow-xl hover:-translate-y-1 hover:border-purple-500/20 transition-all duration-300">
+                    <div class="flex justify-between items-start mb-6">
+                        <div class="flex items-center gap-3">
+                            <div class="w-12 h-12 rounded-xl bg-purple-50 flex items-center justify-center group-hover:scale-110 transition-transform">
+                                <span class="material-symbols-outlined text-purple-600 text-2xl">timeline</span>
+                            </div>
+                            <h3 class="font-headline font-bold text-lg text-on-surface">HR Variability</h3>
+                        </div>
+                        <div class="flex items-center gap-1 text-[9px] font-extrabold text-tertiary bg-tertiary/10 px-2.5 py-1 rounded-full">
+                            <span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">watch</span> SYNCED
+                        </div>
+                    </div>
+                    <div class="mb-4">
+                        <span class="text-4xl font-headline font-extrabold text-slate-900">54</span>
+                        <span class="text-sm font-bold text-outline ml-1">ms</span>
+                    </div>
+                    <div class="flex-1 mt-4 flex items-end gap-2 h-20 px-1">
+                        <div class="w-full bg-purple-100 h-[40%] rounded-t-sm group-hover:bg-purple-200 transition-colors"></div>
+                        <div class="w-full bg-purple-200 h-[60%] rounded-t-sm group-hover:bg-purple-300 transition-colors"></div>
+                        <div class="w-full bg-purple-300 h-[55%] rounded-t-sm group-hover:bg-purple-400 transition-colors"></div>
+                        <div class="w-full bg-purple-400 h-[80%] rounded-t-sm group-hover:bg-purple-500 transition-colors"></div>
+                        <div class="w-full bg-purple-500 h-[70%] rounded-t-sm group-hover:bg-purple-600 transition-colors"></div>
+                        <div class="w-full bg-purple-600 h-[90%] rounded-t-sm group-hover:bg-purple-700 transition-colors"></div>
+                    </div>
+                    <div class="flex justify-between text-[10px] text-outline font-bold px-1 mt-3">
+                        <span>1H</span><span>2H</span><span>6H</span>
+                    </div>
+                </a>
+
+                <a href="respiratory-rate-detail.html" class="glass-card rounded-[2rem] p-8 editorial-shadow flex flex-col group hover:shadow-xl hover:-translate-y-1 hover:border-teal-500/20 transition-all duration-300">
+                    <div class="flex justify-between items-start mb-6">
+                        <div class="flex items-center gap-3">
+                            <div class="w-12 h-12 rounded-xl bg-teal-50 flex items-center justify-center group-hover:scale-110 transition-transform">
+                                <span class="material-symbols-outlined text-teal-600 text-2xl">air</span>
+                            </div>
+                            <h3 class="font-headline font-bold text-lg text-on-surface">Respiratory Rate</h3>
+                        </div>
+                        <div class="flex items-center gap-1 text-[9px] font-extrabold text-tertiary bg-tertiary/10 px-2.5 py-1 rounded-full">
+                            <span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">watch</span> SYNCED
+                        </div>
+                    </div>
+                    <div class="mb-4">
+                        <span class="text-4xl font-headline font-extrabold text-slate-900">14</span>
+                        <span class="text-sm font-bold text-outline ml-1">BR/min</span>
+                    </div>
+                    <div class="flex-1 mt-4 relative h-24 overflow-hidden">
+                        <svg class="w-full h-full stroke-teal-500/30 fill-none stroke-[2.5]" viewBox="0 0 400 100">
+                            <path class="stroke-teal-500 stroke-[3.5] group-hover:stroke-teal-400 transition-colors" d="M0 80 C 100 80, 100 20, 200 20 S 300 80, 400 80"></path>
+                        </svg>
+                        <div class="absolute bottom-0 left-0 w-full flex justify-between text-[10px] text-outline font-bold px-1">
+                            <span>1H</span><span>2H</span><span>6H</span>
+                        </div>
+                    </div>
+                </a>
+
+                <a href="ecg-detail.html" class="glass-card rounded-[2rem] p-8 editorial-shadow flex flex-col group hover:shadow-xl hover:-translate-y-1 hover:border-emerald-500/20 transition-all duration-300">
+                    <div class="flex justify-between items-start mb-6">
+                        <div class="flex items-center gap-3">
+                            <div class="w-12 h-12 rounded-xl bg-emerald-50 flex items-center justify-center group-hover:scale-110 transition-transform">
+                                <span class="material-symbols-outlined text-emerald-600 text-2xl">monitor_heart</span>
+                            </div>
+                            <h3 class="font-headline font-bold text-lg text-on-surface">1-Lead ECG</h3>
+                        </div>
+                        <div class="flex items-center gap-1 text-[9px] font-extrabold text-tertiary bg-tertiary/10 px-2.5 py-1 rounded-full">
+                            <span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">watch</span> SYNCED
+                        </div>
+                    </div>
+                    <div class="mb-4">
+                        <span class="text-sm font-bold text-emerald-600 flex items-center gap-1 bg-emerald-50 w-fit px-3 py-1.5 rounded-lg">
+                            <span class="material-symbols-outlined text-[16px]">check_circle</span>
+                            Sinus Rhythm
+                        </span>
+                    </div>
+                    <div class="flex-1 mt-4 relative h-24 bg-emerald-50/30 rounded-xl border border-emerald-100/50 overflow-hidden">
+                        <div class="absolute inset-0 grid grid-cols-8 grid-rows-4 opacity-20">
+                            <div class="border-r border-b border-emerald-900/20"></div>
+                            <div class="border-r border-b border-emerald-900/20"></div>
+                            <div class="border-r border-b border-emerald-900/20"></div>
+                            <div class="border-r border-b border-emerald-900/20"></div>
+                        </div>
+                        <svg class="w-full h-full stroke-emerald-600 fill-none stroke-[2] group-hover:stroke-emerald-500 transition-colors" viewBox="0 0 400 100">
+                            <path d="M0 50 L 40 50 L 45 45 L 50 50 L 60 50 L 65 20 L 70 80 L 75 50 L 100 50 L 105 45 L 110 50 L 120 50 L 125 20 L 130 80 L 135 50 L 200 50"></path>
+                        </svg>
+                    </div>
+                    <div class="flex justify-end text-[9px] text-outline font-extrabold mt-3 tracking-widest">
+                        LIVE MONITORING
+                    </div>
+                </a>
+            </div>
+
+            <section class="mt-8 mb-12">
+                <div class="glass-card rounded-[2rem] p-8 md:p-10 editorial-shadow">
+                    <div class="flex items-center justify-between mb-8 border-b border-outline-variant/10 pb-6">
+                        <h3 class="font-headline font-bold text-2xl text-slate-900">Clinical Observations</h3>
+                        <span class="text-xs font-bold text-outline uppercase tracking-widest">Page 1 of 4</span>
+                    </div>
+                    <div class="space-y-6">
+                        <div class="flex gap-5 items-start p-6 bg-surface-container-low rounded-2xl hover:bg-surface-container-highest/30 transition-colors">
+                            <div class="bg-primary text-white w-10 h-10 rounded-xl flex items-center justify-center shrink-0 shadow-md">
+                                <span class="material-symbols-outlined text-[20px]">edit_note</span>
+                            </div>
+                            <div>
+                                <p class="text-sm text-slate-800 font-medium leading-relaxed">Patient reports slight dizziness upon standing. SpO2 remained stable at 98% during the event. Recommended continuous monitoring for the next 4 hours and increased fluid intake.</p>
+                                <div class="flex items-center gap-3 mt-4">
+                                    <span class="text-[10px] font-bold text-primary bg-primary/10 border border-primary/20 px-2.5 py-1 rounded-md tracking-wider">VITAL SIGN ALERT</span>
+                                    <span class="text-xs text-outline font-semibold">10:42 AM - Dr. Henderson</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="flex gap-5 items-start p-6 border border-outline-variant/20 rounded-2xl hover:glass-card transition-colors">
+                            <div class="bg-surface-container-highest text-outline w-10 h-10 rounded-xl flex items-center justify-center shrink-0">
+                                <span class="material-symbols-outlined text-[20px]">medical_information</span>
+                            </div>
+                            <div>
+                                <p class="text-sm text-slate-700 leading-relaxed font-medium">Medication administered: Lisinopril 10mg. Patient tolerated well. No immediate adverse reactions noted.</p>
+                                <div class="flex items-center gap-3 mt-4">
+                                    <span class="text-[10px] font-bold text-outline bg-surface-container-highest border border-outline-variant/20 px-2.5 py-1 rounded-md tracking-wider">ROUTINE CARE</span>
+                                    <span class="text-xs text-outline font-semibold">08:15 AM - Nurse Miller</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <script src="../js/app.js"></script>
+</body>
+</html>
+
+
+

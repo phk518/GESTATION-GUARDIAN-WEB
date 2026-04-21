@@ -1,68 +1,76 @@
 const { test, expect } = require('@playwright/test');
 
-// Standard URL for local dev
-const LOCAL_URL = 'http://localhost:3000';
+// Clinical Config
+const DEV_URL = 'http://localhost:3000'; 
 
-test.describe('Gestation Guardian - Core Triage Flows', () => {
+test.describe('Gestation Guardian - Standard Dashboard Protocol', () => {
 
   test.beforeEach(async ({ page }) => {
-    // Navigate to the dashboard before each test
-    await page.goto(LOCAL_URL);
+    await page.goto(DEV_URL, { waitUntil: 'domcontentloaded' });
   });
 
-  test('Agent Pass 1: Initial Load & Telemetry Integrity', async ({ page }) => {
-    // Verify the app loads the correct title
-    await expect(page).toHaveTitle(/Master Dashboard/);
+  test('Protocol 01: Core Systems & Data Integrity', async ({ page }) => {
+    // 1. Verify Branding
+    await expect(page.locator('body')).toContainText('Maternal Oversight');
     
-    // Verify the live clock is ticking (checking for the LIVE badge)
-    await expect(page.getByText('LIVE', { exact: true })).toBeVisible();
-
-    // Verify all 8 simulated patients loaded on the initial grid
-    await expect(page.locator('#patient-count')).toHaveText('8');
+    // 2. Verify Patient Grid Load (Looking for our initial simulated patients)
+    // We check if the "Alice R." card exists
+    await expect(page.getByText('Alice R.')).toBeVisible();
+    await expect(page.getByText('RPM-092')).toBeVisible();
   });
 
-  test('Agent Pass 2: RAG Triage Filter Engine', async ({ page }) => {
-    // Click the 'Critical' filter toggle
-    await page.locator('#filter-Critical').click();
+  test('Protocol 02: Sidebar Filter Engine', async ({ page }) => {
+    // 1. Click the 'Critical' filter in the sidebar
+    // Adjusting selector to find the button containing "Critical"
+    await page.getByRole('button', { name: /critical/i }).click();
 
-    // Verify the active state styling switched to the Critical button
-    await expect(page.locator('#filter-Critical')).toHaveClass(/bg-silver-300/);
+    // 2. Assert Triage Accuracy
+    // Alice R. is Critical, Sarah J. is Stable.
+    await expect(page.getByText('Alice R.')).toBeVisible();
+    await expect(page.getByText('Sarah J.')).not.toBeVisible();
+  });
+
+  test('Protocol 03: Search Engine Precision', async ({ page }) => {
+    const search = page.getByPlaceholder(/search/i);
     
-    // Verify the patient count updates (we have 2 critical patients in the mock data)
-    await expect(page.locator('#patient-count')).toHaveText('2');
-
-    // Ensure Maya Torres (Critical) is visible, but Sarah Jenkins (Stable) is hidden
-    await expect(page.getByText('Maya Torres')).toBeVisible();
-    await expect(page.getByText('Sarah Jenkins')).not.toBeVisible();
-  });
-
-  test('Agent Pass 3: Search Engine Precision', async ({ page }) => {
-    // Type into the search bar
-    await page.locator('#search-input').fill('RPM-112');
-
-    // Verify the grid filters down to exactly 1 patient
-    await expect(page.locator('#patient-count')).toHaveText('1');
-    await expect(page.getByText("Chloe O'Connor")).toBeVisible();
-  });
-
-  test('Agent Pass 4: Slide-out Intervention Panel Activation', async ({ page }) => {
-    // Locate and click Maya Torres's card
-    await page.getByText('Maya Torres').click();
-
-    // Verify the slide-out panel animates in
-    const panel = page.locator('#intervention-panel');
-    await expect(panel).not.toHaveClass(/translate-x-full/);
-
-    // Verify the data successfully populated the deep-dive panel
-    await expect(page.locator('#panel-name')).toHaveText('Maya Torres');
-    await expect(page.locator('#panel-status-text')).toHaveText('Critical');
+    // Search by ID
+    await search.fill('RPM-114');
+    await expect(page.getByText('Maya T.')).toBeVisible();
     
-    // Ensure the Fetal HR data populated
-    await expect(page.locator('#panel-fhr')).not.toHaveText('--');
+    // Ensure others are hidden
+    await expect(page.getByText('Alice R.')).not.toBeVisible();
+  });
 
-    // Close the panel and verify it hides
-    await page.getByRole('button', { name: 'close' }).click();
-    await expect(panel).toHaveClass(/translate-x-full/);
+  test('Protocol 04: Navigation to Deep-Dive Analytics', async ({ page }) => {
+    // 1. Click on patient card — new UI opens a slide-out panel first
+    await page.getByText('Alice R.').first().click();
+
+    // 2. Wait for panel, then click 'View Full Clinical Record'
+    await expect(page.locator('#view-details-btn')).toBeVisible();
+    await page.locator('#view-details-btn').click();
+
+    // 3. Verify routing to patient-detail page (serve may strip .html extension)
+    await expect(page).toHaveURL(/patient-detail/, { timeout: 10000 });
+
+    // 4. Verify the detail page loaded the correct patient
+    await expect(page.locator('#detail-name')).toHaveText('Alice R.', { timeout: 10000 });
+  });
+
+  test('Protocol 05: Telemetry Pulse (IoT Simulation Check)', async ({ page }) => {
+    // Grab a heart rate value from the grid
+    // We look for a number followed by "BPM"
+    const hrValue = page.locator('text=/\\d+ BPM/').first();
+    
+    const initialText = await hrValue.innerText();
+    
+    // Wait for the JS simulation loop (2 seconds)
+    await page.waitForTimeout(2200);
+    
+    const updatedText = await hrValue.innerText();
+    
+    // Static numbers in a live monitor mean the sensor is dead.
+    // This confirms the 'setInterval' in your index.html is working.
+    expect(initialText).not.toBe(updatedText);
   });
 
 });

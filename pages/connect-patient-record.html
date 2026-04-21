@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>Connect Patient | Clinical Dashboard</title>
+    
+    <link href="https://fonts.googleapis.com" rel="preconnect">
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Manrope:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#00497d", "primary-fixed": "#d1e4ff", "primary-container": "#0061a4",
+                        "tertiary": "#084e57", "tertiary-fixed": "#b2ecf7", "secondary": "#535f70",
+                        "secondary-fixed": "#d7e3f8", "error": "#ba1a1a", "error-container": "#ffdad6",
+                        "surface": "#f7f9fe", "surface-container-highest": "#dfe3e8",
+                        "surface-container-lowest": "#ffffff", "surface-container-low": "#f1f4f9",
+                        "on-surface": "#181c20", "outline": "#717782", "outline-variant": "#c1c7d2",
+                        "on-tertiary-fixed-variant": "#084e57", "tertiary-container": "#2b666f"
+                    },
+                    fontFamily: { headline: ["Manrope"], body: ["Inter"], label: ["Inter"] }
+                }
+            }
+        }
+    </script>
+    <style>
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        body { font-family: 'Inter', sans-serif; }
+        h1, h2, h3, .font-headline { font-family: 'Manrope', sans-serif; }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+        
+        .glass-panel { 
+            background: rgba(255, 255, 255, 0.85); 
+            backdrop-filter: blur(24px); 
+            -webkit-backdrop-filter: blur(24px); 
+        }
+            /* --- Glassmorphism Theme --- */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.45) !important;
+            backdrop-filter: blur(16px) saturate(180%);
+            -webkit-backdrop-filter: blur(16px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.5) !important;
+            box-shadow: 0 8px 32px 0 rgba(0, 73, 125, 0.08);
+        }
+        .glass-nav {
+            background: rgba(247, 249, 254, 0.6) !important;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.3) !important;
+        }
+        .bg-surface { background: #f0f4f9 !important; }
+    </style>
+</head>
+<body class="bg-surface text-on-surface flex overflow-hidden selection:bg-primary-fixed selection:text-[#001d36]">
+    <div class="fixed inset-0 z-0 pointer-events-none overflow-hidden">
+        <div class="absolute -top-32 -left-32 w-[600px] h-[600px] bg-blue-300 rounded-full blur-[120px] opacity-40"></div>
+        <div class="absolute bottom-0 right-0 w-[700px] h-[700px] bg-teal-300 rounded-full blur-[150px] opacity-40"></div>
+    </div>
+
+    <aside id="sidebar-target" class="h-screen w-64 fixed left-0 top-0 bg-[#f1f4f9] shadow-[0px_12px_32px_rgba(24,28,32,0.06)] flex flex-col py-8 gap-6 z-50"></aside>
+
+    <main class="ml-64 flex-1 h-screen overflow-hidden flex flex-col relative">
+        
+        <header class="flex justify-between items-center w-full px-8 py-4 sticky top-0 z-40 glass-nav">
+            <div class="flex items-center gap-8 flex-1">
+                <div class="relative w-96">
+                    <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline">search</span>
+                    <input class="w-full pl-10 pr-4 py-2 bg-surface-container-highest border-none focus:ring-2 focus:ring-primary text-sm rounded-xl transition-all" placeholder="Search patient database..." type="text"/>
+                </div>
+            </div>
+            <div class="flex items-center gap-6">
+                <div class="flex items-center gap-4 text-outline">
+                    <button class="hover:text-primary transition-colors"><span class="material-symbols-outlined">notifications</span></button>
+                    <button class="hover:text-primary transition-colors"><span class="material-symbols-outlined">hertory</span></button>
+                    <button class="hover:text-primary transition-colors"><span class="material-symbols-outlined">chat_bubble</span></button>
+                </div>
+                <div class="h-8 w-[1px] bg-outline-variant opacity-20"></div>
+                <div class="flex items-center gap-3">
+                    <span class="font-bold text-sm text-primary">Precision Clinic</span>
+                    <img alt="User profile" class="w-10 h-10 rounded-full border-2 border-primary-container object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAGXUDYrkrnQqdGkIe5Fp1pskZsT-HxOi8HaAGHaMPF1Wv8IwkmBJ0wiJYTIfoKaJPWvLyw92hU4QgM3uqAZU43uf1mkZUkBwyK7JKuhGHgAu-R4yomKE9AKlVtI7bhskftu1YTLSOMto_YgRjmwbi9JxB0DlYKAIZXTcfQWfst81YU_lZBZ7XF4qrgHyU9OAq8MkWzVMUEiFW69SaFJYCkV2ETk-JLJaRxUWQRHMGlMUlPVqiBcGa9Mh6RAYH8TzXJdLdN8-vzpbRk"/>
+                </div>
+            </div>
+        </header>
+
+        <div class="p-10 filter blur-md opacity-50 select-none pointer-events-none max-w-7xl mx-auto w-full">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="glass-card p-6 rounded-2xl shadow-sm border border-outline-variant/15">
+                    <div class="flex items-start justify-between mb-6">
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 rounded-full overflow-hidden"><img src="https://lh3.googleusercontent.com/aida-public/AB6AXuCzUnmwCGzurcEOF_POeS8K8-d2g4edFto4EQe8QVirX8AocnTFIkGSjko-TIavxrUKm6-jgrGq_x-Enfcb54xYZMzhv0aavjDcYBhNR1xeMxDRO3q4lxwLdIcwpe6Z5XtzDuYEXVM0Yiz_Aq1jWPA9s6afYOmLMTs5nnBFQ0j_ZvoUmw05Hn4i-8F6MDp48jnHGGgpYBbXB4X0tckPPgPuVk7QvMk9kZCehGsXB3ZyeUcLTYUmVCHto3swqWYcs53HDjcd1ndEvfU6" class="w-full h-full object-cover"></div>
+                            <div>
+                                <h3 class="font-headline font-bold text-on-surface">Alice R.</h3>
+                                <p class="text-xs text-outline">ID: #AL-9021</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="space-y-3">
+                        <div class="flex justify-between text-xs font-medium"><span class="text-outline">Heart Rate</span><span class="text-on-surface">72 bpm</span></div>
+                        <div class="h-1 bg-surface-container-high rounded-full overflow-hidden"><div class="h-full bg-tertiary w-[70%]"></div></div>
+                    </div>
+                </div>
+                <div class="glass-card p-6 rounded-2xl shadow-sm border border-outline-variant/15">
+                    <div class="flex items-start justify-between mb-6">
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 rounded-full overflow-hidden"><img src="https://lh3.googleusercontent.com/aida-public/AB6AXuDjl-5NLYJtwtKKCqXN4lF9d_RbbyrVHOQmt_YBEj8VYJsk5s6DBZxl5FzNtKOHfDO7mPE4oLhmsvthMBs-KJdRg8ku9P5ko05YO4BjiT-wNIWXN1ernB1ZtJIqWV9SHFIG8hN3gHdRugjVEQTjYAWUyf0g_i08VtICy40cQBZpnVBYJAKvGuRMXZoAgwWVyo0YNRpwZvuVeA-k0oS2sKWcMHZ8XF3mF-UoBC2MNlvA3W2FR8Xx6TjMR6Wirr6JTrP7JKxpQnNxmcDE" class="w-full h-full object-cover"></div>
+                            <div>
+                                <h3 class="font-headline font-bold text-on-surface">Bob S.</h3>
+                                <p class="text-xs text-outline">ID: #BS-4412</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="space-y-3">
+                        <div class="flex justify-between text-xs font-medium text-error"><span>Oxygen Level</span><span>89%</span></div>
+                        <div class="h-1 bg-surface-container-high rounded-full overflow-hidden"><div class="h-full bg-error w-[40%]"></div></div>
+                    </div>
+                </div>
+                <div class="glass-card p-6 rounded-2xl shadow-sm border border-outline-variant/15">
+                    <div class="flex items-start justify-between mb-6">
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 rounded-full overflow-hidden"><img src="https://lh3.googleusercontent.com/aida-public/AB6AXuDk6DkxajluHm_Rakm2XtAx-SYM-GlHJrX33yuF1au3-vKxNC9UmgFeewdzWQ-gNTwo1y19Ab7BZCBbKV33oB6uusZFOrWr-M6y_tJ2jCVmp4tazjtaI2lwfa_sjKamv25740C6q67NkdFTyUYblQ6iLNf3isvopGRjFE8WSExXxlY9qkTo1ywmrMozzboimeXPFyho3qrVQFQkrXatDRVqYLuBZbEF5fz-ZUWN4T1f-LsXoh3K55UFP2efnPqjbGGOkJzo501Oy5-g" class="w-full h-full object-cover"></div>
+                            <div>
+                                <h3 class="font-headline font-bold text-on-surface">Clara M.</h3>
+                                <p class="text-xs text-outline">ID: #CM-3390</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="space-y-3">
+                        <div class="flex justify-between text-xs font-medium text-amber-600"><span>Blood Pressure</span><span>145/95</span></div>
+                        <div class="h-1 bg-surface-container-high rounded-full overflow-hidden"><div class="h-full bg-amber-500 w-[85%]"></div></div>
+                    </div>
+                </div>
+                <div class="glass-card p-6 rounded-2xl shadow-sm border border-outline-variant/15">
+                    <div class="flex items-start justify-between mb-6">
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 rounded-full overflow-hidden"><img src="https://lh3.googleusercontent.com/aida-public/AB6AXuA3RM4VQNk3rRDKjO2VR8drN3cDeO7svStDv4KWqBRhfbmyp6GiCQVYvSZPF1a_6nAZ3jlGNjXdv75RmMoOF0p30ellUOEU2-qm8Os8TrvuNIynuWBe50LLIYjT9d4z8sXvJArtmMGnRLS5PtG3v_idjuuHS4s6453PTjMGeLqdYGSblOpUHNe8JGZa_bCKQUpulSZjHYodM1ZUoMPzknqzLpjwV7fK7MwgrCp8MXUe9M_EjAWosoRjv5IqBbN2PquANWAlloOd6hDF" class="w-full h-full object-cover"></div>
+                            <div>
+                                <h3 class="font-headline font-bold text-on-surface">David K.</h3>
+                                <p class="text-xs text-outline">ID: #DK-1182</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="space-y-3">
+                        <div class="flex justify-between text-xs font-medium"><span class="text-outline">Heart Rate</span><span class="text-on-surface">68 bpm</span></div>
+                        <div class="h-1 bg-surface-container-high rounded-full overflow-hidden"><div class="h-full bg-tertiary w-[65%]"></div></div>
+                    </div>
+                </div>
+                <div class="glass-card p-6 rounded-2xl shadow-sm border border-outline-variant/15">
+                    <div class="flex items-start justify-between mb-6">
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 rounded-full overflow-hidden"><img src="https://lh3.googleusercontent.com/aida-public/AB6AXuC5OnauvZ3EVuXtlfYWSg2XUok7bl6NkjGJYIirNSW2iCyM-fhE3r2C-urAtxxoi47CzEocExOdWbuPP4ns_4JY5VuEbI_2muHG0sC3tc7W-QJDVFyhx2_9KY3MC9xbpnQr5dWwWoDuPu8RbvgoDqhNi_zVou_bCDr0AgC_1JMptOQ8zxo0UWAPD9I0J7NVnbrgGrUO22txzRrKPQARenFkviuwb5rA-33fszhTLqumZhvkFI-FmfMa0GeMf70-c8YxKdSyumNQpog6" class="w-full h-full object-cover"></div>
+                            <div>
+                                <h3 class="font-headline font-bold text-on-surface">Elena V.</h3>
+                                <p class="text-xs text-outline">ID: #EV-7721</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="space-y-3">
+                        <div class="flex justify-between text-xs font-medium"><span class="text-outline">Stability Score</span><span class="text-on-surface">94%</span></div>
+                        <div class="h-1 bg-surface-container-high rounded-full overflow-hidden"><div class="h-full bg-tertiary w-[94%]"></div></div>
+                    </div>
+                </div>
+                <div class="glass-card p-6 rounded-2xl shadow-sm border border-outline-variant/15">
+                    <div class="flex items-start justify-between mb-6">
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 rounded-full overflow-hidden"><img src="https://lh3.googleusercontent.com/aida-public/AB6AXuC9eoVpx_yIJAQ42P0_eD8Tt9jBYgK2NmCe7jOMysCQlLT4qNK0Wln6XpRmndBncjFwm3ZMasYy_vGjPr5sGGwcAThy68aBKpDAexoywCE1dDIwvB8WdVpPWBdGARHa6twpCAX0mv_odJTVEB02HS5wWF6hsb94S31qH0_sF9rWN9ZY7ktkNyVuyEh4T157ytORDKJh8TKizAzbPBoR9TkJvTjnXATlMLOrcurHk3kBUDRFy8cs2VwumZiSSkclCrzrL97lm_AbKFMi" class="w-full h-full object-cover"></div>
+                            <div>
+                                <h3 class="font-headline font-bold text-on-surface">Fatima L.</h3>
+                                <p class="text-xs text-outline">ID: #FL-5003</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="space-y-3">
+                        <div class="flex justify-between text-xs font-medium text-amber-600"><span>Glucose Level</span><span>180 mg/dL</span></div>
+                        <div class="h-1 bg-surface-container-high rounded-full overflow-hidden"><div class="h-full bg-amber-500 w-[78%]"></div></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="fixed inset-0 z-[60] flex items-center justify-center bg-black/10 backdrop-blur-[4px]">
+            <div class="w-[480px] glass-panel p-10 rounded-[2rem] shadow-[0px_24px_48px_rgba(0,73,125,0.12)] border border-white relative animate-[scale-in_0.2s_ease-out]">
+                
+                <a href="../index.html" class="absolute top-6 right-6 text-outline hover:text-error transition-colors">
+                    <span class="material-symbols-outlined">close</span>
+                </a>
+                
+                <div class="flex flex-col items-center text-center">
+                    <div class="relative mb-8">
+                        <div class="w-24 h-24 rounded-full bg-gradient-to-br from-primary to-primary-container flex items-center justify-center text-white shadow-xl">
+                            <span class="material-symbols-outlined text-4xl" style="font-variation-settings: 'FILL' 1;">person</span>
+                        </div>
+                        <div class="absolute -bottom-1 -right-1 w-8 h-8 rounded-full bg-tertiary border-4 border-white flex items-center justify-center text-white">
+                            <span class="material-symbols-outlined text-lg font-bold">add</span>
+                        </div>
+                    </div>
+                    
+                    <h2 class="font-headline text-2xl font-extrabold tracking-tight text-on-surface mb-2">CONNECT PATIENT</h2>
+                    <p class="text-sm text-outline mb-10 max-w-[280px]">Link an existing clinical identity to your oncology workspace securely.</p>
+                    
+                    <div class="w-full space-y-2 text-left mb-8">
+                        <label class="text-[10px] font-bold text-primary uppercase tracking-[0.1em] ml-1" for="patient-id">Patient ID</label>
+                        <div class="relative">
+                            <input class="w-full bg-surface-container-highest/50 border-b-2 border-outline-variant/30 px-4 py-4 font-mono text-lg focus:border-primary focus:glass-card outline-none transition-all rounded-t-xl" id="patient-id" placeholder="e.g., A1B2-C3D4" type="text"/>
+                        </div>
+                    </div>
+                    
+                    <button class="w-full bg-gradient-to-r from-primary to-primary-container text-white py-4 px-8 rounded-xl font-bold flex items-center justify-center gap-3 hover:shadow-lg hover:-translate-y-0.5 transition-all active:translate-y-0 group">
+                        Connect Record
+                        <span class="material-symbols-outlined transition-transform group-hover:translate-x-1">arrow_forward</span>
+                    </button>
+                    
+                    <div class="mt-8 flex items-center justify-center gap-2 px-4 py-2 rounded-full bg-tertiary/10 border border-tertiary/20">
+                        <span class="material-symbols-outlined text-tertiary text-sm" style="font-variation-settings: 'FILL' 1;">verified_user</span>
+                        <span class="text-[9px] font-bold text-on-tertiary-fixed-variant uppercase tracking-wider">Enterprise HIPAA Secure</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <script src="../js/app.js"></script>
+    
+    <style>
+        @keyframes scale-in {
+            from { opacity: 0; transform: scale(0.95) translateY(10px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+            /* --- Glassmorphism Theme --- */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.45) !important;
+            backdrop-filter: blur(16px) saturate(180%);
+            -webkit-backdrop-filter: blur(16px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.5) !important;
+            box-shadow: 0 8px 32px 0 rgba(0, 73, 125, 0.08);
+        }
+        .glass-nav {
+            background: rgba(247, 249, 254, 0.6) !important;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.3) !important;
+        }
+        .bg-surface { background: #f0f4f9 !important; }
+    </style>
+</body>
+</html>
+
+
+
+
+

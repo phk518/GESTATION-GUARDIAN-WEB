@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>Blood Pressure Analysis | Clinical Dashboard</title>
+    
+    <link href="https://fonts.googleapis.com" rel="preconnect">
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Manrope:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#00497d", "primary-fixed": "#d1e4ff", "primary-container": "#0061a4",
+                        "tertiary": "#084e57", "tertiary-fixed": "#b2ecf7", "secondary": "#535f70",
+                        "secondary-fixed": "#d7e3f8", "error": "#ba1a1a", "error-container": "#ffdad6",
+                        "surface": "#f7f9fe", "surface-container-highest": "#dfe3e8",
+                        "surface-container-lowest": "#ffffff", "surface-container-low": "#f1f4f9",
+                        "on-surface": "#181c20", "outline": "#717782", "outline-variant": "#c1c7d2",
+                        "on-tertiary-fixed-variant": "#084e57", "primary-fixed-variant": "#9fcaff",
+                        "on-surface-variant": "#414750", "tertiary-container": "#2b666f"
+                    },
+                    fontFamily: { headline: ["Manrope"], body: ["Inter"], label: ["Inter"] }
+                }
+            }
+        }
+    </script>
+    <style>
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        body { font-family: 'Inter', sans-serif; }
+        h1, h2, h3, .headline { font-family: 'Manrope', sans-serif; }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+        
+        /* Custom Stitch AI Classes */
+        .ghost-border { border: 1px solid rgba(193, 199, 210, 0.15); }
+        .atmospheric-shadow { box-shadow: 0px 12px 32px rgba(24, 28, 32, 0.06); }
+            /* --- Glassmorphism Theme --- */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.45) !important;
+            backdrop-filter: blur(16px) saturate(180%);
+            -webkit-backdrop-filter: blur(16px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.5) !important;
+            box-shadow: 0 8px 32px 0 rgba(0, 73, 125, 0.08);
+        }
+        .glass-nav {
+            background: rgba(247, 249, 254, 0.6) !important;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.3) !important;
+        }
+        .bg-surface { background: #f0f4f9 !important; }
+    </style>
+</head>
+<body class="bg-surface text-on-surface flex overflow-hidden selection:bg-primary-fixed selection:text-[#001d36]">
+    <div class="fixed inset-0 z-0 pointer-events-none overflow-hidden">
+        <div class="absolute -top-32 -left-32 w-[600px] h-[600px] bg-blue-300 rounded-full blur-[120px] opacity-40"></div>
+        <div class="absolute bottom-0 right-0 w-[700px] h-[700px] bg-teal-300 rounded-full blur-[150px] opacity-40"></div>
+    </div>
+
+    <aside id="sidebar-target" class="h-screen w-64 fixed left-0 top-0 bg-[#f1f4f9] shadow-[0px_12px_32px_rgba(24,28,32,0.06)] flex flex-col py-8 gap-6 z-50"></aside>
+
+    <main class="ml-64 flex-1 h-screen overflow-y-auto flex flex-col">
+        
+        <header class="flex justify-between items-center w-full px-8 py-4 sticky top-0 z-40 bg-surface/80 backdrop-blur-xl ghost-border border-b border-opacity-15">
+            <div class="flex items-center gap-6">
+                <div class="relative w-96">
+                    <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline" data-icon="search">search</span>
+                    <input class="w-full pl-10 pr-4 py-2 bg-surface-container-highest border-none focus:ring-2 focus:ring-primary rounded-lg text-sm transition-all" placeholder="Search patient data..." type="text"/>
+                </div>
+            </div>
+            <div class="flex items-center gap-6">
+                <div class="flex items-center gap-4 text-slate-600">
+                    <button onclick="alert('Fetching latest telemetry from device...')"  class="hover:opacity-80 transition-opacity"><span class="material-symbols-outlined" data-icon="notifications">notifications</span></button>
+                    <button class="hover:opacity-80 transition-opacity"><span class="material-symbols-outlined" data-icon="hertory">hertory</span></button>
+                    <button class="hover:opacity-80 transition-opacity"><span class="material-symbols-outlined" data-icon="chat_bubble">chat_bubble</span></button>
+                </div>
+                <div class="h-8 w-px bg-outline-variant opacity-20"></div>
+                <div class="flex items-center gap-3">
+                    <div class="text-right">
+                        <p class="text-sm font-bold text-primary">Alice R.</p>
+                        <p class="text-[10px] text-outline uppercase tracking-tighter">ID: PAT-0092</p>
+                    </div>
+                    <img alt="User profile" class="w-10 h-10 rounded-full object-cover border-2 border-primary-container" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA11juuRwjmeE59WmvvxHN50qKXNpjirMiy9iTCHK5KHrDozmD3LcQWyxmXNqIyDtVRkeXMKQC-zDpRZ4BSb7lBetG1kl90iPoEsneUFIzfFkkifsmXfRO8gc9i72N1-ST9AEOCEsppjIddFq3WNESBE8fMzunO1GlHu2DCrvTzhuO3WTk3ZfylEwGv6ygpdfoX2NcIjGDnlJXHOMYFDni8bXv9msA1UA8OkdfiGmM9xP_4uamEXDdmwJc7_aNIau2fNfjeM89nL5F2"/>
+                </div>
+            </div>
+        </header>
+
+        <div class="p-10 space-y-10 max-w-7xl mx-auto w-full">
+            
+            <div class="flex justify-between items-end">
+                <div>
+                    <nav class="flex gap-2 text-xs font-medium text-outline mb-2">
+                        <span class="hover:text-primary cursor-pointer transition-colors">Patients</span>
+                        <span>/</span>
+                        <span class="hover:text-primary cursor-pointer transition-colors">Alice R.</span>
+                        <span>/</span>
+                        <span class="text-on-surface">Vitals</span>
+                    </nav>
+                    <h2 class="text-4xl font-extrabold tracking-tight text-on-surface headline">Blood Pressure Analysis</h2>
+                </div>
+                <div class="flex gap-3">
+                    <div class="px-4 py-2 bg-tertiary/10 text-tertiary rounded-full flex items-center gap-2 text-sm font-semibold">
+                        <span class="w-2 h-2 rounded-full bg-tertiary animate-pulse"></span>
+                        Stable Status
+                    </div>
+                    <button class="p-2 bg-surface-container-highest rounded-xl text-primary hover:bg-primary hover:text-white transition-all shadow-sm">
+                        <span class="material-symbols-outlined" data-icon="share">share</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-12 gap-6">
+                <div class="col-span-12 lg:col-span-4 glass-card atmospheric-shadow rounded-[2rem] p-8 flex flex-col justify-center items-center relative overflow-hidden group hover:scale-[1.01] transition-transform duration-300">
+                    <div class="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent pointer-events-none"></div>
+                    <span class="text-xs font-bold text-outline tracking-widest uppercase mb-4">Latest Measurement</span>
+                    <div class="flex items-baseline gap-2">
+                        <span class="text-8xl font-black tracking-tighter text-primary">120/80</span>
+                        <span class="text-lg font-bold text-outline">mmHg</span>
+                    </div>
+                    <div class="mt-6 flex items-center gap-2 px-3 py-1 bg-tertiary/10 text-tertiary rounded-full text-xs font-bold">
+                        <span class="material-symbols-outlined text-sm" data-icon="trending_flat">trending_flat</span>
+                        Optimal Range
+                    </div>
+                </div>
+
+                <div class="col-span-12 lg:col-span-8 glass-card atmospheric-shadow rounded-[2rem] p-8 flex flex-col hover:scale-[1.01] transition-transform duration-300">
+                    <div class="flex justify-between items-start mb-8">
+                        <div>
+                            <h3 class="text-xl font-bold text-on-surface headline">24-Hour Trend</h3>
+                            <p class="text-xs text-outline font-medium">Fluctuations tracked via connected device</p>
+                        </div>
+                        <div class="flex gap-2">
+                            <span class="px-3 py-1 rounded-full bg-surface-container-low text-[10px] font-bold text-on-surface-variant">SYSTOLIC</span>
+                            <span class="px-3 py-1 rounded-full bg-surface-container-low text-[10px] font-bold text-outline">DIASTOLIC</span>
+                        </div>
+                    </div>
+                    <div class="flex-1 flex items-end gap-1 min-h-[160px]">
+                        <div class="w-full h-24 bg-primary-container/20 rounded-t-full relative group">
+                            <div class="absolute bottom-0 w-full h-1/2 bg-primary rounded-t-full"></div>
+                        </div>
+                        <div class="w-full h-20 bg-primary-container/20 rounded-t-full relative">
+                            <div class="absolute bottom-0 w-full h-[60%] bg-primary rounded-t-full"></div>
+                        </div>
+                        <div class="w-full h-28 bg-primary-container/20 rounded-t-full relative">
+                            <div class="absolute bottom-0 w-full h-[70%] bg-primary rounded-t-full"></div>
+                        </div>
+                        <div class="w-full h-32 bg-primary-container/20 rounded-t-full relative">
+                            <div class="absolute bottom-0 w-full h-[80%] bg-primary rounded-t-full"></div>
+                        </div>
+                        <div class="w-full h-24 bg-primary-container/20 rounded-t-full relative">
+                            <div class="absolute bottom-0 w-full h-[45%] bg-primary rounded-t-full"></div>
+                        </div>
+                        <div class="w-full h-26 bg-primary-container/20 rounded-t-full relative">
+                            <div class="absolute bottom-0 w-full h-[55%] bg-primary rounded-t-full"></div>
+                        </div>
+                        <div class="w-full h-36 bg-primary-container/20 rounded-t-full relative">
+                            <div class="absolute bottom-0 w-full h-[85%] bg-primary rounded-t-full"></div>
+                        </div>
+                        <div class="w-full h-22 bg-primary-container/20 rounded-t-full relative">
+                            <div class="absolute bottom-0 w-full h-[40%] bg-primary rounded-t-full"></div>
+                        </div>
+                        <div class="w-full h-24 bg-primary-container/20 rounded-t-full relative">
+                            <div class="absolute bottom-0 w-full h-[50%] bg-primary rounded-t-full"></div>
+                        </div>
+                        <div class="w-full h-30 bg-primary-container/20 rounded-t-full relative">
+                            <div class="absolute bottom-0 w-full h-[75%] bg-primary rounded-t-full"></div>
+                        </div>
+                        <div class="w-full h-28 bg-primary-container/20 rounded-t-full relative">
+                            <div class="absolute bottom-0 w-full h-[65%] bg-primary rounded-t-full"></div>
+                        </div>
+                        <div class="w-full h-20 bg-primary-container/20 rounded-t-full relative">
+                            <div class="absolute bottom-0 w-full h-[30%] bg-primary rounded-t-full"></div>
+                        </div>
+                    </div>
+                    <div class="flex justify-between mt-4 text-[10px] font-bold text-outline uppercase tracking-wider">
+                        <span>08:00 AM</span>
+                        <span>12:00 PM</span>
+                        <span>04:00 PM</span>
+                        <span>08:00 PM</span>
+                        <span>12:00 AM</span>
+                    </div>
+                </div>
+
+                <div class="col-span-12 space-y-6">
+                    <div class="flex justify-between items-center px-4">
+                        <div class="flex items-center gap-3">
+                            <span class="material-symbols-outlined text-primary p-2 bg-primary/10 rounded-xl" data-icon="sync">sync</span>
+                            <h3 class="text-xl font-bold text-on-surface headline">Sync Operations</h3>
+                        </div>
+                        <button class="group flex items-center gap-3 bg-gradient-to-r from-primary to-primary-container text-white px-6 py-3 rounded-full font-bold shadow-lg hover:shadow-primary/20 transition-all active:scale-95">
+                            <span class="material-symbols-outlined text-xl group-hover:rotate-180 transition-transform duration-500" data-icon="sync_alt">sync_alt</span>
+                            Fetch Latest Data
+                        </button>
+                    </div>
+                    <div class="glass-card atmospheric-shadow rounded-3xl overflow-hidden">
+                        <table class="w-full text-left border-collapse">
+                            <thead>
+                                <tr class="bg-surface-container-low border-b border-outline-variant/15">
+                                    <th class="px-8 py-5 text-[11px] font-bold text-outline uppercase tracking-widest">Sync Timestamp</th>
+                                    <th class="px-8 py-5 text-[11px] font-bold text-outline uppercase tracking-widest">Status</th>
+                                    <th class="px-8 py-5 text-[11px] font-bold text-outline uppercase tracking-widest text-right">Data Points Captured</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-outline-variant/5">
+                                <tr class="hover:bg-surface-container-low/50 transition-colors">
+                                    <td class="px-8 py-4">
+                                        <div class="flex flex-col">
+                                            <span class="text-sm font-bold text-on-surface">Oct 24, 2023 · 09:42 AM</span>
+                                            <span class="text-[10px] text-outline">Automatic device trigger</span>
+                                        </div>
+                                    </td>
+                                    <td class="px-8 py-4">
+                                        <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-tertiary/10 text-tertiary text-xs font-bold">
+                                            <span class="w-1.5 h-1.5 rounded-full bg-tertiary"></span> Success
+                                        </div>
+                                    </td>
+                                    <td class="px-8 py-4 text-right">
+                                        <span class="text-sm font-black text-on-surface">14</span>
+                                    </td>
+                                </tr>
+                                <tr class="hover:bg-surface-container-low/50 transition-colors">
+                                    <td class="px-8 py-4">
+                                        <div class="flex flex-col">
+                                            <span class="text-sm font-bold text-on-surface">Oct 24, 2023 · 08:15 AM</span>
+                                            <span class="text-[10px] text-outline">Manual practitioner fetch</span>
+                                        </div>
+                                    </td>
+                                    <td class="px-8 py-4">
+                                        <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-secondary/10 text-secondary text-xs font-bold">
+                                            <span class="w-1.5 h-1.5 rounded-full bg-secondary animate-pulse"></span> Pending
+                                        </div>
+                                    </td>
+                                    <td class="px-8 py-4 text-right">
+                                        <span class="text-sm font-black text-outline">—</span>
+                                    </td>
+                                </tr>
+                                <tr class="hover:bg-surface-container-low/50 transition-colors">
+                                    <td class="px-8 py-4">
+                                        <div class="flex flex-col">
+                                            <span class="text-sm font-bold text-on-surface">Oct 23, 2023 · 11:55 PM</span>
+                                            <span class="text-[10px] text-outline">Routine nightly backup</span>
+                                        </div>
+                                    </td>
+                                    <td class="px-8 py-4">
+                                        <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-tertiary/10 text-tertiary text-xs font-bold">
+                                            <span class="w-1.5 h-1.5 rounded-full bg-tertiary"></span> Success
+                                        </div>
+                                    </td>
+                                    <td class="px-8 py-4 text-right">
+                                        <span class="text-sm font-black text-on-surface">128</span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="col-span-12 md:col-span-6 glass-card atmospheric-shadow rounded-[2rem] p-8 flex items-center gap-6">
+                    <div class="w-16 h-16 rounded-full bg-error-container/50 flex items-center justify-center text-error">
+                        <span class="material-symbols-outlined text-3xl" data-icon="monitor_heart">monitor_heart</span>
+                    </div>
+                    <div>
+                        <h4 class="text-sm font-bold text-on-surface uppercase tracking-wider mb-1">Average MAP</h4>
+                        <p class="text-3xl font-black text-primary">93.3 <span class="text-xs font-bold text-outline">mmHg</span></p>
+                        <p class="text-[10px] font-medium text-outline mt-1">Mean Arterial Pressure (Optimal)</p>
+                    </div>
+                </div>
+                <div class="col-span-12 md:col-span-6 glass-card atmospheric-shadow rounded-[2rem] p-8 flex items-center gap-6">
+                    <div class="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center text-primary">
+                        <span class="material-symbols-outlined text-3xl" data-icon="timer">timer</span>
+                    </div>
+                    <div>
+                        <h4 class="text-sm font-bold text-on-surface uppercase tracking-wider mb-1">Resting Pulse</h4>
+                        <p class="text-3xl font-black text-primary">72 <span class="text-xs font-bold text-outline">BPM</span></p>
+                        <p class="text-[10px] font-medium text-outline mt-1">Consistency Rating: High</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="../js/app.js"></script>
+</body>
+</html>
+
+
+
+
+

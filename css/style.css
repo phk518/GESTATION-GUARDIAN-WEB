@@ -1,0 +1,46 @@
+/* Custom Global Styles */
+@layer base {
+    body {
+        @apply font-sans bg-background text-on-surface;
+    }
+    h1, h2, h3, .font-headline {
+        @apply font-display;
+    }
+}
+
+/* Material Symbols Configuration */
+.material-symbols-outlined {
+    font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    vertical-align: middle;
+}
+
+/* Polished UI Components */
+.glass-panel {
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+}
+
+.patient-card-shadow {
+    box-shadow: 0px 12px 32px rgba(24, 28, 32, 0.06);
+    @apply transition-all duration-300 hover:shadow-lg hover:scale-[1.02] border border-white/50;
+}
+
+.active-indicator {
+    width: 4px;
+    height: 24px;
+    position: absolute;
+    left: 0;
+    @apply bg-primary rounded-r-full;
+}
+
+/* Custom Scrollbar for a cleaner look */
+::-webkit-scrollbar {
+    width: 6px;
+}
+::-webkit-scrollbar-track {
+    @apply bg-transparent;
+}
+::-webkit-scrollbar-thumb {
+    @apply bg-slate-300 rounded-full hover:bg-slate-400;
+}

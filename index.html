@@ -1,28 +1,266 @@
-<!--
-  Copyright (c) Microsoft Corporation.
-
-  Licensed under the Apache License, Version 2.0 (the "License");
-  you may not use this file except in compliance with the License.
-  You may obtain a copy of the License at
-
-      http://www.apache.org/licenses/LICENSE-2.0
-
-  Unless required by applicable law or agreed to in writing, software
-  distributed under the License is distributed on an "AS IS" BASIS,
-  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  See the License for the specific language governing permissions and
-  limitations under the License.
--->
 <!DOCTYPE html>
-<html lang="en" translate="no">
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Playwright Dashboard</title>
-    <script type="module" crossorigin src="/assets/index-BAOybkp8.js"></script>
-    <link rel="stylesheet" crossorigin href="/assets/index-CZAYOG76.css">
-  </head>
-  <body>
-    <div id="root"></div>
-  </body>
+<html class="light" lang="en">
+<head>
+<meta charset="utf-8">
+<meta content="width=device-width,initial-scale=1.0" name="viewport">
+<title>Maternal Oversight | Gestation Guardian</title>
+<link href="https://fonts.googleapis.com" rel="preconnect">
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Manrope:wght@600;700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>tailwind.config={theme:{extend:{colors:{"primary":"#00497d","error":"#ba1a1a","surface":"#f8fafc"},fontFamily:{headline:["Manrope"],body:["Inter"]}}}}</script>
+<style>
+  .material-symbols-outlined{font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24}
+  body{font-family:'Inter',sans-serif;background-color:#f8fafc}
+  .patient-card{background:white;border:1px solid #e2e8f0;box-shadow:0 4px 6px -1px rgb(0 0 0/.1);transition:all .3s ease;cursor:pointer}
+  .heart-pulse-mom{animation:hpulse .8s infinite;color:#00497d}
+  .heart-pulse-baby{animation:hpulse .5s infinite;color:#ba1a1a}
+  @keyframes hpulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.2);opacity:.7}}
+  .vitals-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px;padding-top:12px;border-top:1px solid #f1f5f9}
+  .sfb.sfb-active{background:rgba(0,73,125,.1);color:#00497d;border-radius:.75rem}
+  .sfb.sfb-crit{background:rgba(186,26,26,.08);color:#ba1a1a;border-radius:.75rem}
+  .sfb.sfb-warn{background:rgba(245,158,11,.08);color:#b45309;border-radius:.75rem}
+  .sfb.sfb-stable{background:rgba(16,185,129,.08);color:#047857;border-radius:.75rem}
+</style>
+</head>
+<body class="flex overflow-hidden">
+
+<aside id="sidebar-target" class="h-screen w-64 fixed left-0 top-0 bg-white border-r border-slate-200 flex flex-col py-8 z-50"></aside>
+
+<main class="ml-64 flex-1 h-screen overflow-y-auto flex flex-col relative">
+  <header class="flex justify-between items-center w-full px-10 py-5 sticky top-0 z-40 bg-white/80 backdrop-blur-md border-b border-slate-200">
+    <div class="flex items-center gap-6 w-1/2">
+      <div class="relative w-full max-w-md">
+        <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-400">search</span>
+        <input id="search-input" class="w-full pl-12 pr-10 py-2.5 bg-slate-100 border-none rounded-full text-sm outline-none focus:ring-2 focus:ring-primary/20" placeholder="Search patients or ID..." type="text"/>
+        <button id="search-clear" onclick="clearSearch()" class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-700 hidden"><span class="material-symbols-outlined text-[18px]">close</span></button>
+      </div>
+    </div>
+    <div class="flex items-center gap-4 text-slate-400">
+      <button onclick="window.location.href='login.html'" title="Sign Out" class="flex items-center justify-center w-10 h-10 rounded-full hover:bg-error/10 hover:text-error transition-all group ml-2"><span class="material-symbols-outlined text-[22px]">logout</span></button>
+      <div class="h-8 w-[1px] bg-slate-200 mx-2"></div>
+      <div class="flex items-center gap-3">
+        <div class="text-right"><p class="text-sm font-bold text-slate-900">Dr. Julian Vance</p><p class="text-[10px] text-slate-500 font-bold uppercase tracking-wider">Clinical Provider</p></div>
+        <img class="w-10 h-10 rounded-full object-cover border border-slate-200" src="https://ui-avatars.com/api/?name=Julian+Vance&background=00497d&color=fff" alt="Doctor"/>
+      </div>
+    </div>
+  </header>
+
+  <div class="p-10 max-w-[1400px] mx-auto w-full">
+    <header class="mb-10 flex justify-between items-end">
+      <div>
+        <h2 class="text-5xl font-black text-slate-900 tracking-tight font-headline">Maternal Oversight</h2>
+        <p class="text-slate-500 mt-2 font-medium text-lg">RPM Dashboard • Live Monitoring</p>
+      </div>
+      <div class="text-right">
+        <p class="text-3xl font-black text-slate-900" id="count-num">6</p>
+        <p class="text-xs text-slate-400 font-bold uppercase tracking-widest">Active Patients</p>
+      </div>
+    </header>
+    <div id="patient-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"></div>
+    <div id="empty-state" class="hidden flex-col items-center justify-center py-24 text-center">
+      <span class="material-symbols-outlined text-6xl text-slate-300 mb-4">search_off</span>
+      <p class="text-xl font-bold text-slate-400">No patients found</p>
+      <p class="text-sm text-slate-400 mt-1">Try a different name or ID</p>
+      <button onclick="clearSearch()" class="mt-4 text-primary font-bold text-sm hover:underline">Clear search</button>
+    </div>
+  </div>
+
+  <!-- Side Panel -->
+  <div id="side-panel" class="fixed inset-y-0 right-0 w-[460px] bg-white/95 backdrop-blur-3xl shadow-[0_0_50px_rgba(0,0,0,0.15)] z-[100] translate-x-full transition-transform duration-500 ease-in-out border-l border-slate-200 flex flex-col">
+    <div class="p-6 pb-4 flex justify-between items-center border-b border-slate-100">
+      <button onclick="closePanel()" class="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center hover:bg-slate-200 transition-colors"><span class="material-symbols-outlined text-slate-600">close</span></button>
+      <span id="panel-status" class="px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest"></span>
+    </div>
+    <div class="p-6 overflow-y-auto flex-1">
+      <div class="flex items-center gap-5 mb-6">
+        <img id="panel-img" src="" class="w-16 h-16 rounded-2xl object-cover border border-slate-200 shadow-sm">
+        <div>
+          <h2 id="panel-name" class="text-2xl font-black text-slate-900 tracking-tight font-headline"></h2>
+          <p id="panel-id" class="text-slate-400 font-bold uppercase text-xs tracking-widest mt-1"></p>
+          <p id="panel-weeks" class="text-primary font-bold text-sm mt-1"></p>
+        </div>
+      </div>
+      <!-- ECG Canvas -->
+      <div class="mb-5 bg-slate-900 rounded-2xl p-4 overflow-hidden">
+        <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2 flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse inline-block"></span>Live ECG Feed</p>
+        <canvas id="ecg-canvas" height="56" class="w-full block"></canvas>
+      </div>
+      <!-- Vitals 2x2 -->
+      <h3 class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-3">Current Telemetry</h3>
+      <div class="grid grid-cols-2 gap-3 mb-5">
+        <div class="bg-blue-50/50 p-4 rounded-2xl border border-blue-100">
+          <p class="text-[10px] font-bold text-slate-500 uppercase flex items-center gap-1 mb-1"><span class="material-symbols-outlined text-[13px] heart-pulse-mom" style="font-variation-settings:'FILL' 1">favorite</span> Maternal HR</p>
+          <p class="text-3xl font-black text-slate-900" id="panel-mhr">--</p>
+        </div>
+        <div class="p-4 rounded-2xl border border-red-100 bg-red-50/30">
+          <p class="text-[10px] font-bold text-red-400 uppercase flex items-center gap-1 mb-1"><span class="material-symbols-outlined text-[13px] heart-pulse-baby" style="font-variation-settings:'FILL' 1">child_care</span> Fetal HR</p>
+          <p class="text-3xl font-black text-error" id="panel-fhr">--</p>
+        </div>
+        <div class="bg-slate-50 p-4 rounded-2xl border border-slate-100">
+          <p class="text-[10px] font-bold text-slate-500 uppercase mb-1">Blood Pressure</p>
+          <p class="text-xl font-black text-slate-900" id="panel-bp">--/--</p>
+          <p class="text-[9px] text-slate-400 font-medium">mmHg</p>
+        </div>
+        <div class="bg-sky-50/50 p-4 rounded-2xl border border-sky-100">
+          <p class="text-[10px] font-bold text-slate-500 uppercase mb-1">SpO₂</p>
+          <p class="text-3xl font-black text-sky-700" id="panel-spo2">--%</p>
+        </div>
+      </div>
+      <button id="view-details-btn" class="w-full bg-slate-100 text-primary border border-slate-200 rounded-xl p-4 font-bold flex justify-center items-center gap-2 hover:bg-slate-200 transition-colors shadow-sm">
+        <span class="material-symbols-outlined text-[20px]">analytics</span>
+        <span class="text-xs tracking-wider uppercase">View Full Clinical Record</span>
+      </button>
+    </div>
+  </div>
+</main>
+
+
+
+<script>
+const simulatedDatabase = [
+  { id:"RPM-092", name:"Alice R.",  weeks:28, status:"Critical", image:"https://ui-avatars.com/api/?name=Alice+R&background=fecaca&color=ba1a1a",  vitals:{maternalHR:82,fetalHR:142,bpSys:145,bpDia:92,spo2:96}},
+  { id:"RPM-044", name:"Chloe M.", weeks:38, status:"Critical", image:"https://ui-avatars.com/api/?name=Chloe+M&background=fecaca&color=ba1a1a",  vitals:{maternalHR:88,fetalHR:155,bpSys:150,bpDia:96,spo2:94}},
+  { id:"RPM-114", name:"Maya T.",  weeks:34, status:"Warning",  image:"https://ui-avatars.com/api/?name=Maya+T&background=fef3c7&color=b45309",  vitals:{maternalHR:76,fetalHR:138,bpSys:130,bpDia:85,spo2:98}},
+  { id:"RPM-205", name:"Sarah J.", weeks:39, status:"Stable",   image:"https://ui-avatars.com/api/?name=Sarah+J&background=e0f2fe&color=00497d",  vitals:{maternalHR:72,fetalHR:125,bpSys:118,bpDia:78,spo2:100}},
+  { id:"RPM-128", name:"Zoe K.",   weeks:30, status:"Warning",  image:"https://ui-avatars.com/api/?name=Zoe+K&background=fef3c7&color=b45309",    vitals:{maternalHR:78,fetalHR:135,bpSys:128,bpDia:82,spo2:97}},
+  { id:"RPM-301", name:"Elena M.", weeks:32, status:"Stable",   image:"https://ui-avatars.com/api/?name=Elena+M&background=dcfce7&color=047857",  vitals:{maternalHR:68,fetalHR:130,bpSys:115,bpDia:75,spo2:99}}
+];
+
+let currentFilter='All', searchTerm='', ecgRaf=null;
+
+window.filterPatients=function(status){
+  currentFilter=status; renderDashboard();
+  document.querySelectorAll('.sfb').forEach(b=>{b.className=b.className.replace(/sfb-(active|crit|warn|stable)/g,'').trim();});
+  const map={'All':'sfb-active','Critical':'sfb-crit','High Risk':'sfb-warn','Stable':'sfb-stable'};
+  const btn=document.querySelector(`.sfb[data-filter="${status}"]`);
+  if(btn&&map[status]) btn.classList.add(map[status]);
+};
+
+
+
+function clearSearch(){
+  document.getElementById('search-input').value='';
+  searchTerm=''; document.getElementById('search-clear').classList.add('hidden');
+  renderDashboard();
+}
+
+function renderDashboard(){
+  const grid=document.getElementById('patient-grid');
+  const empty=document.getElementById('empty-state');
+  grid.innerHTML='';
+  const filtered=simulatedDatabase.filter(p=>{
+    const ok=!searchTerm||p.name.toLowerCase().includes(searchTerm)||p.id.toLowerCase().includes(searchTerm);
+    if(!ok)return false;
+    if(currentFilter==='All')return true;
+    if(currentFilter==='High Risk'&&p.status==='Warning')return true;
+    return p.status===currentFilter;
+  });
+  document.getElementById('count-num').innerText=filtered.length;
+  if(filtered.length===0){empty.classList.remove('hidden');empty.classList.add('flex');return;}
+  empty.classList.add('hidden');empty.classList.remove('flex');
+
+  filtered.forEach(p=>{
+    let sc='',pr='',fb='bg-slate-50 border-slate-100',ft='text-slate-900';
+    if(p.status==='Critical'){sc='bg-error/10 text-error';pr="<span class='w-1.5 h-1.5 rounded-full bg-error animate-pulse'></span>";fb='bg-red-50/30 border-red-100/50';ft='text-error';}
+    else if(p.status==='Warning'){sc='bg-amber-100 text-amber-700';pr="<span class='w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse'></span>";fb='bg-amber-50/30 border-amber-100/50';}
+    else sc='bg-emerald-100 text-emerald-700';
+    const pct=Math.round((p.weeks/40)*100);
+    const pc=p.status==='Critical'?'#ba1a1a':p.status==='Warning'?'#f59e0b':'#10b981';
+    grid.insertAdjacentHTML('beforeend',`
+      <div onclick="openIntervention('${p.id}')" class="patient-card p-7 rounded-[2rem] flex flex-col group hover:-translate-y-1 hover:shadow-xl transition-all">
+        <div class="flex justify-between items-start mb-4 w-full">
+          <div class="flex gap-4">
+            <img src="${p.image}" class="w-14 h-14 rounded-2xl object-cover ring-2 ring-slate-100">
+            <div><h3 class="font-headline font-bold text-xl text-slate-900">${p.name}</h3><p class="text-xs text-slate-500 font-medium mt-1">ID: #${p.id}</p></div>
+          </div>
+          <span class="${sc} px-3 py-1.5 rounded-md text-[10px] font-black uppercase tracking-widest flex items-center gap-1.5 shadow-sm">${pr} ${p.status}</span>
+        </div>
+        <div class="mb-3">
+          <div class="flex justify-between mb-1"><p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Gestation</p><p class="text-[11px] font-black text-slate-600">${p.weeks} <span class="font-medium text-slate-400">/ 40 wks</span></p></div>
+          <div class="h-1.5 bg-slate-100 rounded-full overflow-hidden"><div class="h-full rounded-full" style="width:${pct}%;background:${pc}"></div></div>
+        </div>
+        <div class="vitals-grid w-full">
+          <div class="bg-slate-50 p-3 rounded-xl border border-slate-100"><p class="text-[9px] font-bold text-slate-400 uppercase tracking-tighter mb-1 flex items-center gap-1"><span class="material-symbols-outlined text-[12px] heart-pulse-mom" style="font-variation-settings:'FILL' 1">favorite</span>Maternal HR</p><p class="text-lg font-black text-slate-900"><span class="mhr-val">${p.vitals.maternalHR}</span> <span class="text-[9px] text-slate-400">BPM</span></p></div>
+          <div class="${fb} p-3 rounded-xl border"><p class="text-[9px] font-bold text-red-400 uppercase tracking-tighter mb-1 flex items-center gap-1"><span class="material-symbols-outlined text-[12px] heart-pulse-baby" style="font-variation-settings:'FILL' 1">child_care</span>Fetal HR</p><p class="text-lg font-black ${ft}"><span class="fhr-val">${p.vitals.fetalHR}</span> <span class="text-[9px] text-slate-400">BPM</span></p></div>
+          <div class="bg-slate-50 p-3 rounded-xl border border-slate-100"><p class="text-[9px] font-bold text-slate-400 uppercase tracking-tighter mb-1">Blood Pressure</p><p class="text-sm font-black text-slate-900">${p.vitals.bpSys}/<span class="text-slate-500">${p.vitals.bpDia}</span> <span class="text-[9px] text-slate-400">mmHg</span></p></div>
+          <div class="bg-sky-50/50 p-3 rounded-xl border border-sky-100"><p class="text-[9px] font-bold text-slate-400 uppercase tracking-tighter mb-1">SpO₂</p><p class="text-lg font-black text-sky-700">${p.vitals.spo2}<span class="text-[9px] text-slate-400">%</span></p></div>
+        </div>
+      </div>`);
+  });
+}
+
+async function loadSidebar(){
+  try{document.getElementById('sidebar-target').innerHTML=await(await fetch('components/sidebar.html')).text();}catch(e){}
+}
+
+function openIntervention(id){
+  const p=simulatedDatabase.find(x=>x.id===id); if(!p)return;
+  document.getElementById('panel-name').innerText=p.name;
+  document.getElementById('panel-weeks').innerText=p.weeks+' Weeks Gestation';
+  document.getElementById('panel-id').innerText='Patient ID: #'+p.id;
+  document.getElementById('panel-img').src=p.image;
+  document.getElementById('panel-mhr').innerText=p.vitals.maternalHR;
+  document.getElementById('panel-fhr').innerText=p.vitals.fetalHR;
+  document.getElementById('panel-bp').innerText=p.vitals.bpSys+'/'+p.vitals.bpDia;
+  document.getElementById('panel-spo2').innerText=p.vitals.spo2+'%';
+  const st=document.getElementById('panel-status');
+  st.innerText=p.status;
+  st.className=p.status==='Critical'?'px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest bg-error text-white':p.status==='Warning'?'px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest bg-amber-500 text-white':'px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest bg-emerald-500 text-white';
+  document.getElementById('view-details-btn').onclick=()=>window.location.href=`pages/patient-detail.html?id=${p.id}`;
+  document.getElementById('side-panel').classList.remove('translate-x-full');
+  startECG(p.status);
+}
+
+function closePanel(){
+  document.getElementById('side-panel').classList.add('translate-x-full');
+  if(ecgRaf){cancelAnimationFrame(ecgRaf);ecgRaf=null;}
+}
+
+function startECG(status){
+  if(ecgRaf){cancelAnimationFrame(ecgRaf);ecgRaf=null;}
+  const canvas=document.getElementById('ecg-canvas');
+  const ctx=canvas.getContext('2d');
+  canvas.width=canvas.offsetWidth||400;
+  const W=canvas.width,H=canvas.height;
+  const color=status==='Critical'?'#ef4444':status==='Warning'?'#f59e0b':'#34d399';
+  let offset=0;
+  const ecgPoints=[0,0,0,0,-3,15,-8,30,10,-5,0,0,0,0,0,0,0,0,0,0];
+  const seg=ecgPoints.length;
+  function draw(){
+    ctx.fillStyle='#0f172a';ctx.fillRect(0,0,W,H);
+    ctx.beginPath();ctx.strokeStyle=color;ctx.lineWidth=1.5;
+    for(let x=0;x<W;x++){
+      const i=Math.floor((x+offset)%seg);
+      const y=H/2-ecgPoints[i];
+      x===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
+    }
+    ctx.stroke();
+    // Scan line
+    const scanX=(W-offset%W+W)%W;
+    ctx.fillStyle='rgba(15,23,42,0.8)';ctx.fillRect(scanX,0,12,H);
+    offset=(offset+1.5)%seg;
+    ecgRaf=requestAnimationFrame(draw);
+  }
+  draw();
+}
+
+// IoT sim
+setInterval(()=>{
+  document.querySelectorAll('.mhr-val,.fhr-val').forEach(el=>{
+    const v=parseInt(el.innerText);el.innerText=v+(Math.random()>.5?1:-1);
+  });
+},2000);
+
+document.addEventListener('DOMContentLoaded',()=>{
+  loadSidebar(); renderDashboard();
+  document.getElementById('search-input').addEventListener('input',e=>{
+    searchTerm=e.target.value.toLowerCase();
+    document.getElementById('search-clear').classList.toggle('hidden',!searchTerm);
+    renderDashboard();
+  });
+});
+</script>
+</body>
 </html>

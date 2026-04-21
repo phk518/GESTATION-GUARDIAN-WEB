@@ -1,0 +1,40 @@
+<div class="h-full flex flex-col px-6">
+    <div class="mb-8 mt-2">
+        <a href="/" class="flex items-center gap-2 group">
+            <span class="material-symbols-outlined text-[20px] text-primary group-hover:scale-110 transition-transform" style="font-variation-settings:'FILL' 1">home_health</span>
+            <h1 class="text-xl font-black text-primary font-headline tracking-tight group-hover:opacity-80 transition-opacity">Precision Clinic</h1>
+        </a>
+    </div>
+
+    <div class="flex items-center gap-3 p-4 bg-slate-50 rounded-2xl border border-slate-100 mb-8">
+        <img class="w-10 h-10 rounded-full object-cover border border-slate-200" src="https://ui-avatars.com/api/?name=Julian+Vance&background=00497d&color=fff" alt="Doctor"/>
+        <div>
+            <p class="text-sm font-bold text-slate-900">Dr. Julian Vance</p>
+            <p class="text-[10px] text-slate-500 font-bold uppercase tracking-wider">Chief Surgeon</p>
+        </div>
+    </div>
+
+    <nav class="flex-1 overflow-y-auto">
+        <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest px-4 mb-2">Patients</p>
+        <ul class="space-y-1 mb-6">
+            <li><button data-filter="All"       onclick="typeof window.filterPatients==='function' ? window.filterPatients('All')       : window.location.href='/'" class="sfb w-full flex items-center gap-3 px-4 py-3 hover:bg-primary/5 hover:text-primary rounded-xl text-slate-600 font-bold transition-colors group"><span class="material-symbols-outlined text-[20px] group-hover:scale-110 transition-transform">group</span> All Patients</button></li>
+            <li><button data-filter="Critical"  onclick="typeof window.filterPatients==='function' ? window.filterPatients('Critical')  : window.location.href='/'" class="sfb w-full flex items-center gap-3 px-4 py-3 hover:bg-error/5 hover:text-error rounded-xl text-slate-600 font-bold transition-colors group"><span class="material-symbols-outlined text-[20px] group-hover:scale-110 transition-transform">emergency</span> Critical</button></li>
+            <li><button data-filter="High Risk" onclick="typeof window.filterPatients==='function' ? window.filterPatients('High Risk') : window.location.href='/'" class="sfb w-full flex items-center gap-3 px-4 py-3 hover:bg-amber-500/5 hover:text-amber-600 rounded-xl text-slate-600 font-bold transition-colors group"><span class="material-symbols-outlined text-[20px] group-hover:scale-110 transition-transform">warning</span> High Risk</button></li>
+            <li><button data-filter="Stable"    onclick="typeof window.filterPatients==='function' ? window.filterPatients('Stable')    : window.location.href='/'" class="sfb w-full flex items-center gap-3 px-4 py-3 hover:bg-emerald-500/5 hover:text-emerald-600 rounded-xl text-slate-600 font-bold transition-colors group"><span class="material-symbols-outlined text-[20px] group-hover:scale-110 transition-transform">check_circle</span> Stable</button></li>
+        </ul>
+
+        <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest px-4 mb-2">Actions</p>
+        <ul class="space-y-1 mb-6">
+            <li>
+                <a href="/pages/connect-patient-record.html" class="w-full flex items-center gap-3 px-4 py-3 hover:bg-primary/5 hover:text-primary rounded-xl text-slate-600 font-bold transition-colors group block">
+                    <span class="material-symbols-outlined text-[20px] group-hover:scale-110 transition-transform">person_add</span> Connect Patient
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+    <div class="pt-6 border-t border-slate-100 space-y-1">
+        <button onclick="window.location.href='/pages/dr-anya-sharma-settings.html'" class="w-full flex items-center gap-3 px-4 py-2 hover:bg-slate-50 rounded-xl text-slate-500 font-semibold transition-colors text-sm"><span class="material-symbols-outlined text-[20px]">settings</span> Settings</button>
+        <button onclick="window.location.href='/pages/support-help-center.html'" class="w-full flex items-center gap-3 px-4 py-2 hover:bg-slate-50 rounded-xl text-slate-500 font-semibold transition-colors text-sm"><span class="material-symbols-outlined text-[20px]">help</span> Support</button>
+    </div>
+</div>
